@@ -74,7 +74,7 @@ def serve(pipeline):
     def page_not_found(e):
         return render_template('404.html'), 404
 
-    app.run()
+    app.run(host='0.0.0.0')
 
 
 def run():
@@ -86,6 +86,6 @@ def run():
     serve(pipeline)
 
 if __name__ == '__main__':
-    run()
+    run() 
 
 
