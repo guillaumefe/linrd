@@ -1,2 +1,5 @@
 __pycache__
 venv
+pipelinr.egg-info
+build/
+dist/

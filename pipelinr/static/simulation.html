@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>innov24 - pipeline</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </head>
+  <body>
+      <section class="section">
+          <div class="container">
+              <h1 class="title">
+                  Innov24
+              </h1>
+              <p class="subtitle">
+              A social workspace for journalists
+              </p>
+              <div id="root"></div>
+          </div>
+      </section>
+      <script>
+          async function fetch_it() {
+              let response = await fetch('/simulate');
+              if (response.ok) { // if HTTP-status is 200-299
+                  // get the response body (the method explained below)
+                  let root = document.getElementById('root')
+                  let json = await response.json();
+
+                  let simulation = {}
+
+                  for (entry in json) {
+                      task = json[entry]
+                      for (let key in task['attr']) {
+                          if (simulation[key]) {
+                              simulation[key] = simulation[key].concat([task['attr'][key]])
+                              try {
+                                  sum = simulation[key].reduce((a, b)=>{
+                                      return parseInt(a, 10) + parseInt(b, 10);
+                                  })
+                                  if (!isNaN(sum)) {
+                                      simulation[key] = [sum]
+                                  }
+                              } catch(e) {}
+                          } else {
+                              simulation[key] = [task['attr'][key]]
+                          }
+                      }
+                  }
+
+                  let separator, container, attributes 
+                  for (let key in simulation) {
+                      container = document.createElement('div')
+                      attribute = document.createElement('strong')
+                      attributes = document.createElement('ul')
+                      attribute.innerHTML = key.toUpperCase()
+                      container.appendChild(attribute)
+                      for (let i in simulation[key]) {
+                          el = document.createElement('li')
+                          el.innerHTML = simulation[key][i]
+                          //el.innerHTML = '. ' + simulation[key][i]
+                          attributes.appendChild(el)
+                      }
+                      container.appendChild(attributes)
+                      root.appendChild(container)
+                  }
+
+                  separator = document.createElement('hr')
+                  root.appendChild(separator)
+
+                  let recipe = ''
+                  container = ''
+                  let span, text, container2
+                  container = document.createElement('ul')
+                  container.id = "myUl"
+                  for (entry in json) {
+                      task = json[entry]
+                      if (task['recipe'] !== recipe) {
+                        separator = document.createElement('br')
+                        li = document.createElement('li')
+                        text = document.createElement('p')
+                        text.style.fontWeight = 'bold'
+                        recipe = task['recipe']
+                        text.innerHTML = recipe.toUpperCase()
+                        container.appendChild(li)
+                        li.appendChild(text)
+                        root.appendChild(container)
+                      } else {
+                        console.log(task)
+                        container3 = document.createElement('li')
+                        span = document.createElement('span')
+                        span.className = "caret" 
+                        let last = task['ancestors'].length-1
+                        span.innerHTML = '['+task['ancestors'][last]+'] ' + task['text']
+                        container3.appendChild(span)
+                        container2 = document.createElement('ul')
+                        container2.className = "nested" 
+                        container3.appendChild(container2)
+                        text = document.createElement('li')
+                        text.innerHTML = JSON.stringify(task)
+                        container2.appendChild(text)
+                        container.appendChild(container3)
+                        root.appendChild(container)
+                        container.appendChild(separator)
+                      }
+                  }
+
+                  var toggler = document.getElementsByClassName("caret");
+                  var i;
+
+                  for (i = 0; i < toggler.length; i++) {
+                      toggler[i].addEventListener("click", function() {
+                          this.parentElement.querySelector(".nested").classList.toggle("active");
+                          this.classList.toggle("caret-down");
+                      });
+                  }
+
+              } else {
+                  alert("HTTP-Error: " + response.status);
+              }
+          }
+            
+            fetch_it()
+
+      </script>
+  </body>
+</html>

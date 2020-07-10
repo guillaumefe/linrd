@@ -5,7 +5,8 @@ An effective task engine.
 
 ## What is Pipelinr?
 
-A todo engine aimed to deliver the firsts tasks of every projects and to assist users troughout goals achievement.
+A todo engine. It's goal is to read as fast as possible a classical 
+todolist writed down on a file and to deliver the firsts tasks actionables.
 
 ## Installation
 ```
@@ -15,8 +16,9 @@ python app.py
 
 ## Usage
 ```
-Basic usage is as follows:
+The basic usage is as follows:
 ```
+# goal.yml 
 
 ```
 # goal.yml
@@ -24,11 +26,9 @@ Basic usage is as follows:
     - this
 - my
 - goal
-```
 
-```
-./pipelinr
-```
+ppl = Pipelinr('goal.yml')
+ppl.serve()
 
 ```
 # in the browser

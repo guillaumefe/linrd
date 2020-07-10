@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Pipelinr</title>
+        <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    </head>
+    <body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+          Pipelinr
+      </h1>
+      <p class="subtitle">
+        AI over task engine
+      </p>
+    <a id="prev" title=""
+ href="javascript:;" onclick="prev();return false;">Prev</a>
+    |
+    <a id="next-issues" title=""
+ href="javascript:;" onclick="next();return false;">Next</a>
+      <hr>
+      <div id="root"></div>
+    </div>
+  </section>
+    <script>
+
+        async function prev() {
+            let response = await fetch('/prev');
+            if (response.ok) { // if HTTP-status is 200-299
+                //let json = await response.json();
+                //console.log(json)
+                build_view(response)
+            }
+        }
+
+        async function next() {
+            //window.location = '/next?done='+JSON.stringify(done)
+            let response = await fetch('/next?done='+JSON.stringify(done))
+            if (response.ok) { // if HTTP-status is 200-299
+                //let json = await response.json();
+                //console.log(json)
+                build_view(response)
+            }
+        }
+
+        async function build_view(response) {
+                // get the response body (the method explained below)
+                let root = document.getElementById('root');
+                root.innerHTML = ''
+                let json = await response.json();
+                //console.log(json)
+                done = {}
+                for (entry in json) {
+                    task = json[entry]
+                    //if(task['isleaf'] == false) {
+                    //    continue
+                    //}
+                    let checkbox = document.createElement('input')
+                    checkbox.id = task['recipe'];
+                    checkbox.type = "checkbox";
+                    checkbox.name = "control";
+                    checkbox.value = task['done'];
+                    checkbox.checked = task['done'];
+                    checkbox.onclick = () => {
+                        done[checkbox.id] = checkbox.checked
+                    }
+                    let newline = document.createElement('br')
+                    let separator = document.createElement('hr')
+                    let container = document.createElement('p')
+                    let text = document.createElement('div')
+                    text.style.whiteSpace = 'pre-wrap'
+                    let attributes = document.createElement('span')
+                    let st = task['ancestors'].join('->')
+                    let out = '['+task['recipe']+'] ' + task['text'].replace(/ *\([^)]*\) */g, "")
+                    text.innerHTML = out
+                    if (st) {
+                        st = st.replace(/ *\([^)]*\) */g, "")
+                        //text.innerHTML = st + ': ' + out + ' ' + task['position'] +'/'+ task['total']
+                    } else {
+                        text.innerHTML = out + ' ' + task['position'] +'/'+ task['total']
+                    }
+                    for (let key in task['attr']) {
+                        let attribute = document.createElement('button')
+                        attribute.innerHTML = key + ': ' + task['attr'][key]
+                        attributes.appendChild(attribute)
+                        attributes.appendChild(document.createElement('br'))
+                    }
+                    let table  = document.createElement('table')
+                    let tr = document.createElement('tr')
+                    let th1 = document.createElement('th')
+                    let th2 = document.createElement('th')
+                    checkbox.style.position = 'relative'
+                    checkbox.top = '2px'
+                    th1.appendChild(checkbox)
+                    th2.appendChild(text)
+                    th1.style.padding = '5px'
+                    th2.style.padding = '5px'
+                    th1.style.fontWeight = 'normal'
+                    th2.style.fontWeight = 'normal'
+                    tr.append(th1)
+                    tr.append(th2)
+                    table.append(tr)
+                    container.appendChild(table)
+                    container.appendChild(attributes)
+                    root.appendChild(container)
+                    root.appendChild(newline)
+                    root.appendChild(separator)
+
+                    let y = window.localStorage.getItem('scrl');
+                    window.scrollTo(0, y); // values are x,y-offset
+
+                }
+        }
+
+        async function fetch_it() {
+            let response = await fetch('/api');
+            if (response.ok) { // if HTTP-status is 200-299
+                build_view(response)
+            } else {
+            alert("HTTP-Error: " + response.status);
+        }
+    }
+
+    window.addEventListener('scroll', function() {
+        var y = window.scrollY
+        window.localStorage.setItem('scrl', y);
+    });
+
+    fetch_it()
+
+
+    </script>
+
+
+    <script>
+
+
+    </script>
+
+    </body>
+</html>

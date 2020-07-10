@@ -1,0 +1,2 @@
+graft pipelinr/templates
+graft pipelinr/static
