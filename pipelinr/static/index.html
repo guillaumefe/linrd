@@ -12,16 +12,14 @@
   <section class="section">
     <div class="container">
       <h1 class="title">
-          Pipelinr
+          Pipelinr <a id="new" title="" href="javascript:;" onclick="next();return false;"><strong>+</strong></a>
       </h1>
       <p class="subtitle">
-        AI over task engine
+        Multitasking for real
       </p>
-    <a id="prev" title=""
- href="javascript:;" onclick="prev();return false;">Prev</a>
+    <a id="prev" title="" href="javascript:;" onclick="prev();return false;">Prev</a>
     |
-    <a id="next-issues" title=""
- href="javascript:;" onclick="next();return false;">Next</a>
+    <a id="next-issues" title="" href="javascript:;" onclick="next();return false;">Next</a>
       <hr>
       <div id="root"></div>
     </div>
@@ -106,6 +104,57 @@
                     table.append(tr)
                     container.appendChild(table)
                     container.appendChild(attributes)
+
+                    container.style.padding = "10px"
+
+                    let menu = document.createElement('div')
+
+                    let system_menu = document.createElement('div')
+                    let control_menu = document.createElement('div') 
+
+                    let colorize = (elem, color) => {
+                        container.style.backgroundColor = color
+                    }
+
+                    let option1 = document.createElement('button')
+                    option1.style.width="8%"
+                    option1.style.margin = "4px"
+                    option1.onclick = (event) => {
+                        return colorize(event.target, "#ff4d4d")
+                    }
+                    option1.innerHTML = "False"
+
+                    let option2 = document.createElement('button')
+                    option2.style.width="8%"
+                    option2.style.margin = "4px"
+                    option2.onclick = (event) => {
+                        return colorize(event.target, "lightgreen")
+                    }
+                    option2.innerHTML = "True"
+
+                    let option3 = document.createElement('button')
+                    option3.style.width="8%"
+                    option3.style.margin = "4px"
+                    option3.innerHTML = "Detail"
+
+                    let option4 = document.createElement('button')
+                    option4.style.width="8%"
+                    option4.style.margin = "4px"
+                    option4.onclick = (event) => {
+                        return colorize(event.target, "lightgray")
+                    }
+                    option4.innerHTML = "Pause"
+
+                    system_menu.appendChild(option4)
+                    system_menu.appendChild(option3)
+                    control_menu.appendChild(option1)
+                    control_menu.appendChild(option2)
+
+                    menu.appendChild(control_menu)
+                    menu.appendChild(system_menu)
+
+                    container.appendChild(menu)
+
                     root.appendChild(container)
                     root.appendChild(newline)
                     root.appendChild(separator)
