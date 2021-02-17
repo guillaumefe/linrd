@@ -8,7 +8,7 @@ setup(
     packages=['pipelinr'],
     include_package_data=True,
     zip_safe=False,
-    install_requires=['Flask'],
+    install_requires=['Flask', 'gunicorn'],
     entry_points={
         'console_scripts': [
             'pipelinr=pipelinr.pipelinr:run'
