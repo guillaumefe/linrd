@@ -115,7 +115,7 @@ function App() {
           session.insert({
               row: session.getLength(),
               column: 0
-          }, localStorage.getItem('pl'))
+          }, localStorage.getItem('pl') || "")
       }}
       />
       <textarea id="result" style={{flex: 1, border: "none", overflow: "auto", outline: "none"}} disabled={true}></textarea>
