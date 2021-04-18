@@ -84,14 +84,12 @@ function onChange(newValue) {
         const pl = yaml.load(newValue);
         const rez = pipelinr(pl)
         result.innerHTML  = yaml.dump(rez);
-        setTimeout(()=>localStorage.setItem('pl', newValue), 0)
+        
     } catch (e) {
         if(newValue) {
             result.innerHTML = e
-            setTimeout(()=>localStorage.setItem('pl', newValue), 0)
         } else {
             result.innerHTML = ""
-            setTimeout(()=>localStorage.setItem('pl', ""), 0)
         }
     }
 }
@@ -112,6 +110,7 @@ function App() {
       editorProps={{ $blockScrolling: true }}
       onLoad = {(editor) => {
           editor.focus();
+          setInterval(()=>localStorage.setItem('pl', newValue), 3000)
           var session = editor.session
           session.insert({
               row: session.getLength(),
