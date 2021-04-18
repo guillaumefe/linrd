@@ -76,7 +76,7 @@ function pipelinr (pl) {
 }
 
 //====================================
-
+let CURRENT = ""
 function onChange(newValue) {
     //console.log("change", newValue);
     let result = document.getElementById("result")
@@ -84,7 +84,6 @@ function onChange(newValue) {
         const pl = yaml.load(newValue);
         const rez = pipelinr(pl)
         result.innerHTML  = yaml.dump(rez);
-        
     } catch (e) {
         if(newValue) {
             result.innerHTML = e
@@ -92,6 +91,7 @@ function onChange(newValue) {
             result.innerHTML = ""
         }
     }
+    CURRENT = newValue || ""
 }
 
 // Render editor
@@ -110,7 +110,7 @@ function App() {
       editorProps={{ $blockScrolling: true }}
       onLoad = {(editor) => {
           editor.focus();
-          setInterval(()=>localStorage.setItem('pl', newValue), 3000)
+          setInterval(()=>localStorage.setItem('pl', CURRENT), 3000)
           var session = editor.session
           session.insert({
               row: session.getLength(),
