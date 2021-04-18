@@ -107,7 +107,6 @@ function App() {
       theme="github"
       onChange={onChange}
       name="UNIQUE_ID_OF_DIV"
-      maxLines=-1
       editorProps={{ $blockScrolling: true }}
       onLoad = {(editor) => {
           editor.focus();
