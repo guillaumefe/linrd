@@ -107,7 +107,7 @@ function App() {
       theme="github"
       onChange={onChange}
       name="UNIQUE_ID_OF_DIV"
-      maxLines="Infinity"
+      maxLines=-1
       editorProps={{ $blockScrolling: true }}
       onLoad = {(editor) => {
           editor.focus();
@@ -118,7 +118,7 @@ function App() {
           }, localStorage.getItem('pl') || "")
       }}
       />
-      <textarea id="result" value="Read the doc : https://guillaumefe.github.io/linrd/"style={{flex: 1, border: "none", overflow: "auto", outline: "none"}} disabled={true}></textarea>
+      <textarea id="result" value="Read the doc : https://guillaumefe.github.io/linrd/" style={{flex: 1, border: "none", overflow: "auto", outline: "none"}} disabled={true}></textarea>
     </div>
   );
 }
