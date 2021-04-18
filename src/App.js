@@ -84,14 +84,14 @@ function onChange(newValue) {
         const pl = yaml.load(newValue);
         const rez = pipelinr(pl)
         result.innerHTML  = yaml.dump(rez);
-        localStorage.setItem('pl', newValue);
+        setTimeout(()=>localStorage.setItem('pl', newValue), 0)
     } catch (e) {
         if(newValue) {
             result.innerHTML = e
-            localStorage.setItem('pl', newValue);
+            setTimeout(()=>localStorage.setItem('pl', newValue), 0)
         } else {
             result.innerHTML = ""
-            localStorage.setItem('pl', "");
+            setTimeout(()=>localStorage.setItem('pl', ""), 0)
         }
     }
 }
