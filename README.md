@@ -1,10 +1,7 @@
-# pipelinr
+# Linrd
 An effective task engine.
 
-# /!\ DEV BRANCH
-
-## What is Pipelinr?
-
+## What is Linrd?
 A todo engine aimed to deliver the firsts tasks of every projects
 Future: will assist users troughout goals achievement
 
