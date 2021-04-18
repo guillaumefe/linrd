@@ -110,7 +110,7 @@ function App() {
       editorProps={{ $blockScrolling: true }}
       onLoad = {(editor) => {
           editor.focus();
-          setInterval(()=>localStorage.setItem('pl', CURRENT), 3000)
+          setInterval(()=>localStorage.setItem('pl', CURRENT), 15000)
           var session = editor.session
           session.insert({
               row: session.getLength(),
