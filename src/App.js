@@ -102,7 +102,7 @@ function App() {
       </header>
       <AceEditor style={{flex: 1}}
       placeholder="Read the doc : https://guillaumefe.github.io/linrd/"
-      maxLines: Infinity
+      maxLines= Infinity
       mode="java"
       theme="github"
       onChange={onChange}
