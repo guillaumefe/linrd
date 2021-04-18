@@ -103,6 +103,7 @@ function App() {
       <header className="App-header">
       </header>
       <AceEditor style={{flex: 1}}
+      placeholder="Read the doc : https://guillaumefe.github.io/linrd/"
       mode="java"
       theme="github"
       onChange={onChange}
