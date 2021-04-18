@@ -117,7 +117,7 @@ function App() {
           }, localStorage.getItem('pl') || "")
       }}
       />
-      <textarea id="result" value="Read the doc : https://guillaumefe.github.io/linrd/" style={{flex: 1, border: "none", overflow: "auto", outline: "none"}} disabled={true}></textarea>
+      <textarea id="result" style={{flex: 1, border: "none", overflow: "auto", outline: "none"}} disabled={true}></textarea>
     </div>
   );
 }
