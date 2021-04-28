@@ -53,8 +53,12 @@ function pipelinr (pl) {
             const index = origin.shift()
             const lastCharsIndex = index.slice(-2);
             if(lastCharsIndex === done) return memo
-            const lastCharsValue = value.slice(-2);
-            if(lastCharsValue === done) return memo
+            try {
+                const lastCharsValue = value.slice(-2);
+                if(lastCharsValue === done) return memo
+            } catch(e) {
+                return e
+            }
 
             if ( ! memo[index]) memo[index] = []
             let parents = ""
@@ -81,7 +85,12 @@ function onChange(newValue) {
     //console.log("change", newValue);
     let result = document.getElementById("result")
     try {
-        const pl = yaml.load(newValue);
+        const pl = yaml.load(newValue, {
+            'styles': {
+                '!!null' : 'canonical'
+            },
+            'sortKeys': true
+        });
         const rez = pipelinr(pl)
         result.innerHTML  = yaml.dump(rez);
     } catch (e) {
