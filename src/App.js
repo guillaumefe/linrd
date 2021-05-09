@@ -1,10 +1,16 @@
 import React from "react";
-//import { render } from "react-dom";
-import AceEditor from "react-ace";
+import ListGroup from "react-bootstrap/ListGroup"
+import Button from "react-bootstrap/Button"
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import yaml from "js-yaml";
 
+import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
+
+import Editor from "./components/editor.jsx"
+import Viewer from "./components/viewer.jsx"
 
 //==============pipelinr===============
 
@@ -45,89 +51,168 @@ function deepReduce(collection, fn, memo) {
 
 }
 
-function pipelinr (pl) {
-    const done = "--"
-    return deepReduce(pl, function(memo, value, path) {
-        if (typeof value !== "object") {
-            const origin = path.filter(x => isNaN(x))
-            const index = origin.shift()
-            const lastCharsIndex = index.slice(-2);
-            if(lastCharsIndex === done) return memo
-            try {
-                const lastCharsValue = value.slice(-2);
-                if(lastCharsValue === done) return memo
-            } catch(e) {
-                return e
-            }
-
-            if ( ! memo[index]) memo[index] = []
-            let parents = ""
-            let suffix = ""
-            for (let o=0; o<origin.length; o++) {
-                const lastChars = origin[o].slice(-2);
-                if (lastChars === done) suffix = done
-                origin[o] += suffix
-            }
-            if (origin.length) parents = origin.join(", ")
-            const lastCharsParents = parents.slice(-2);
-            if(lastCharsParents === done) return memo
-            const _parents =  (parents) ? parents + " " : "";
-            memo[index].push(_parents + value);
-        }
-
-        return memo;
-    }, {});
-}
-
-//====================================
-let CURRENT = ""
-function onChange(newValue) {
-    //console.log("change", newValue);
-    let result = document.getElementById("result")
-    try {
-        const pl = yaml.load(newValue, {
-            'styles': {
-                '!!null' : 'canonical'
-            },
-            'sortKeys': true
-        });
-        const rez = pipelinr(pl)
-        result.innerHTML  = yaml.dump(rez);
-    } catch (e) {
-        if(newValue) {
-            result.innerHTML = e
-        } else {
-            result.innerHTML = ""
-        }
-    }
-    CURRENT = newValue || ""
-}
-
-// Render editor
 function App() {
+
+    const [value, setValue] = React.useState([])
+
+    //first time access
+    React.useEffect(() => {
+        // do async task to get the data
+        // database access
+        // le retour sera un cb:
+        //  - si observable: subscribe
+        //  - si ..
+        //  - faire un set value:
+        //      - car:
+        //          - apres la req asycn:
+        //              - recup valeur
+        //              - injecte dans le state avec setValue
+    })
+
+    const onDone = (event) => {
+        const target = value[event.target.dataset.key]
+        const isDone = target.done
+        target.await = false
+        target.cancel = false
+        target.later = false
+        target.value = target.value + ' --'
+        if ( ! isDone ) {
+            target.done = true;
+        //} else {
+        //    target.done = false;
+        }
+        setValue([...value])
+    }
+
+    const onAwait = (event) => {
+        const target = value[event.target.dataset.key]
+        const is = target.await
+        target.done = false
+        target.cancel = false
+        target.later = false
+        if ( ! is ) {
+            target.await = true;
+        //} else {
+        //    target.await = false;
+        }
+        setValue([...value])
+    }
+
+    const onCancel = (event) => {
+        const target = value[event.target.dataset.key]
+        const is = target.cancel
+        target.await = false
+        target.done = false
+        target.later = false
+        if ( ! is ) {
+            target.cancel = true;
+        //} else {
+        //    target.cancel = false;
+        }
+        setValue([...value])
+    }
+
+    const onLater = (event) => {
+        const target = value[event.target.dataset.key]
+        const is = target.later
+        target.await = false
+        target.cancel = false
+        target.done = false
+        if ( ! is ) {
+            target.later = true;
+        //} else {
+        //    target.later = false;
+        }
+        setValue([...value])
+    }
+
+    const loadYaml = () => new Promise((onResolve, onReject)=>{
+        let cout = 0
+        try {
+            yaml.loadAll(load(), function (doc) {
+                const output = deepReduce(doc, (memo, value, path) => {
+                    if (value && typeof value === "string") {
+                        const task = {
+                            key: cout++,
+                            done: false,
+                            later: false,
+                            cancel: false,
+                            await: false,
+                            path: path.map( x => (isNaN(x)) ? x : ""),
+                            value
+                        }
+                        memo.push(task)
+                    }
+                    return memo
+                }, []);
+                onResolve(output)
+            });
+        } catch(e) {
+            onReject(e)
+        }
+    })
+
+    const onChange = (newValue) => {
+
+        save(newValue)
+        loadYaml()
+            .then( v => {
+                setValue(v)
+            })
+            .catch( e => {
+                setValue([])
+            })
+
+    }
+
+    const save = (pl) => {
+        localStorage.setItem('pl', JSON.stringify(pl))
+    }
+
+    const load = () => {
+        return JSON.parse(localStorage.getItem('pl'))
+    }
+
+    const onLoad = (editor) => {
+        const session = editor.session
+        let textContent = load() || ""
+        editor.focus();
+        session.insert({
+            row: session.getLength(),
+            column: 0
+        }, load())
+    }
+
+  //const html = '<textarea id="result" style={{flex: 1, border: "none", overflow: "auto", outline: "none"}} disabled={true}></textarea>' 
+  
   return (
+     // Infinty as a string causing error but is necessary TODO
     <div className="App" style={{ display:"flex", minHeight:"40em" }}>
       <header className="App-header">
       </header>
       <AceEditor style={{flex: 1}}
       placeholder="Read the doc : https://guillaumefe.github.io/linrd/"
-      maxLines= "Infinity"
+      maxLines= 'Infinity'
       mode="java"
       theme="github"
       onChange={onChange}
       name="UNIQUE_ID_OF_DIV"
       editorProps={{ $blockScrolling: true }}
-      onLoad = {(editor) => {
-          editor.focus();
-          setInterval(()=>localStorage.setItem('pl', CURRENT), 3000)
-          var session = editor.session
-          session.insert({
-              row: session.getLength(),
-              column: 0
-          }, localStorage.getItem('pl') || "")
-      }}
+      onLoad = {onLoad}
       />
-      <textarea id="result" style={{flex: 1, border: "none", overflow: "auto", outline: "none"}} disabled={true}></textarea>
+      <ListGroup id="result" style={{flex: 1, padding: "10px"}}>
+        {value.map( x => {
+          return <ListGroup.Item style={{display: "flex"}}>
+                <div style={{flex: 1}}>{"[" + x.key +  "]"} {x.path.join(" ") + x.value}</div>
+                <div style={{flex:0.1}}>
+                    <Button data-key={x.key} variant={(x.later) ? "warning" : "outline-warning"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onLater}>Later</Button>
+                    <Button data-key={x.key} variant={(x.done) ? "success" : "outline-success"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onDone}>Done</Button>
+                    <Button data-key={x.key} variant={(x.await) ? "primary" : "outline-primary"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onAwait}>Await</Button>
+                    <Button data-key={x.key} variant={(x.cancel) ? "info" : "outline-info"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onCancel}>Cancel</Button>
+                </div>
+              </ListGroup.Item>
+        })}
+      </ListGroup>
     </div>
   );
 }
