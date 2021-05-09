@@ -75,6 +75,7 @@ function App() {
         target.await = false
         target.cancel = false
         target.later = false
+        target.value = target.value.replace(/ .-$/, "")
         target.value = target.value + ' --'
         if ( ! isDone ) {
             target.done = true;
@@ -90,6 +91,8 @@ function App() {
         target.done = false
         target.cancel = false
         target.later = false
+        target.value = target.value.replace(/ .-$/, "")
+        target.value = target.value + ' *-'
         if ( ! is ) {
             target.await = true;
         //} else {
@@ -104,6 +107,8 @@ function App() {
         target.await = false
         target.done = false
         target.later = false
+        target.value = target.value.replace(/ .-$/, "")
+        target.value = target.value + ' x-'
         if ( ! is ) {
             target.cancel = true;
         //} else {
@@ -118,6 +123,8 @@ function App() {
         target.await = false
         target.cancel = false
         target.done = false
+        target.value = target.value.replace(/ .-$/, "")
+        target.value = target.value + ' l-'
         if ( ! is ) {
             target.later = true;
         //} else {
