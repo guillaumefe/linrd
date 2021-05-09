@@ -177,7 +177,7 @@ function App() {
     }
 
     const load = () => {
-        return JSON.parse(localStorage.getItem('pl'))
+        return JSON.parse(localStorage.getItem('pl')) || ""
     }
 
     const onLoad = (editor) => {
