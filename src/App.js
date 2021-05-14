@@ -177,7 +177,11 @@ function App() {
     }
 
     const load = () => {
-        return JSON.parse(localStorage.getItem('pl')) || ""
+        try {
+            return JSON.parse(localStorage.getItem('pl')) || ""
+        } catch(e) {
+            return ""
+        }
     }
 
     const onLoad = (editor) => {
