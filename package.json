@@ -2,8 +2,8 @@
   "name": "linrd",
   "version": "0.1.0",
   "license": {
-      "type": "GPL-3.0-or-later",
-      "url": "https://spdx.org/licenses/GPL-3.0-or-later.html"
+    "type": "GPL-3.0-or-later",
+    "url": "https://spdx.org/licenses/GPL-3.0-or-later.html"
   },
   "private": true,
   "dependencies": {
@@ -18,8 +18,10 @@
     "react-ace": "^9.4.0",
     "react-bootstrap": "^1.6.0",
     "react-dom": "^17.0.2",
+    "react-loading": "^2.0.3",
     "react-redux": "^7.2.3",
-    "react-scripts": "4.0.3"
+    "react-scripts": "4.0.3",
+    "redux-persist": "^6.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
