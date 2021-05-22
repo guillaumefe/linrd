@@ -5,6 +5,8 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 
 import pipelinrReducer from '../features/pipelinr/pipelinrSlice';
 
+import { encryptTransform } from 'redux-persist-transform-encrypt';
+
 import {
   FLUSH,
   REHYDRATE,
@@ -15,8 +17,16 @@ import {
 } from "redux-persist";
 
 const persistConfig = {
-  key: 'root',
-  storage,
+    key: 'root',
+    storage,
+    transforms: [
+        encryptTransform({
+            secretKey: 'my-super-secret-key',
+            onError: function (error) {
+                // Handle the error.
+            },
+        }),
+    ],
 }
 
 const persistedReducer = persistReducer(persistConfig, pipelinrReducer)
