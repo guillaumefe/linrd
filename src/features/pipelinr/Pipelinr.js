@@ -104,7 +104,6 @@ export function Viewer() {
   return (
       <ListGroup id="result" style={{flex: 1, padding: "10px"}}>
       {tasks.map( x => {
-          debugger
           return <ListGroup.Item key={x.key} style={{display: "flex", justifyContent: "space-between"}}>
               <div style={{textAlign: "left", wordBreak: "break-all"}}>{"[" + x.key +  "]"} {x.path.join(" ") + x.value}</div>
               <div style={{flex:0.1}}>

@@ -2,14 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { store } from './app/store';
+import { store, persistor } from './app/store';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react'
+import Loading from 'react-loading';
 import * as serviceWorker from './serviceWorker';
+
+const onBeforeLift = () => {
+  // take some action before the gate lifts
+}
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <PersistGate 
+        loading={<Loading type={"balls"} color={"#333"} height={667} width={"100%"} />}
+        onBeforeLift={onBeforeLift}
+        persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
