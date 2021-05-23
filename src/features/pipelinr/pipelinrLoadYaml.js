@@ -42,18 +42,32 @@ function deepReduce(collection, fn, memo) {
 export function loadYaml(value = "") {
 
         let count = 0
-        let parents = 0
         value = value.split('\n').map( item => {
-            parents++
-            item = item.trimEnd()
-            if(item[item.length-1] === ":") {
-                //return item.slice(0, item.length-1) + " (line="+count+parents+"):" + "\n"
-                return item.slice(0, item.length-1) + ":" + "\n"
-            } else {
-                return item + " (line="+count+parents+")" + "\n"
-            }
+            let out = ""
             count++
-        }).join('')
+            item = item.trimEnd()
+            if(item[item.length-1] === ":" || item[item.length-1] === "|" || item[item.length-1] === ">") {
+                if (item[item.length-1] === "|" || item[item.length-1] === ">") {
+                    const tmp = item.slice(0, item.length-1).trimEnd()
+                    if (tmp[tmp.length-1] == ":") {
+                        out = item.slice(0, item.length-1) + " |"
+                    } else {
+                        out = item.slice(0, item.length)
+                    }
+                } else {
+                    out= item.slice(0, item.length)
+                }
+            } else {
+                if (item.trimStart()[2] === "*") {
+                    out = item.slice(0, item.length)
+                } else if(item){
+                    out = item + " (line="+count+")"
+                } else {
+                    //out = "- " + item
+                }
+            }
+            return out
+        }).join('\n')
 
         return new Promise((onResolve, onReject)=>{
             try {

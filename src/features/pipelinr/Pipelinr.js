@@ -21,6 +21,9 @@ import ListGroup from "react-bootstrap/ListGroup"
 import Button from "react-bootstrap/Button"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import ReactMarkdown from 'react-markdown'
+import gfm from 'remark-gfm'
+
 export function Editor() {
   const dispatch = useDispatch()
   const value = useSelector(selectValue)
@@ -32,19 +35,20 @@ export function Editor() {
             dispatch(updateTasks(tasks))
         }, (err) => {
             dispatch(updateTasks([]))
-            dispatch(displayError(err))
+            dispatch(displayError(err.message))
         }) 
     } else {
         dispatch(updateTasks([]))
     }
   }
   return (
-      <AceEditor style={{flex: 1, padding: "10px"}}
+      <AceEditor style={{width:"100%"}}
         mode="yaml"
         theme="github"
         value = {value}
         onChange={onChange}
         name="editor"
+        maxLines={Infinity}
         editorProps={{ $blockScrolling: true }}
       />
   );
@@ -68,7 +72,7 @@ export function Viewer() {
                     if (line[line.length-1] === "-") {
                         line = line.slice(0, line.length-2)
                     }
-                    line = line + " " +symbol
+                    line = line.trimEnd() + " " +symbol
                 }
             }
             count++
@@ -101,11 +105,16 @@ export function Viewer() {
         onAct(event, "*-", origin)
     }
 
+  //<pr>{x.value}</pr>
   return (
-      <ListGroup id="result" style={{flex: 1, padding: "10px"}}>
+      <ListGroup id="result" style={{padding: "10px" }}>
       {tasks.map( x => {
           return <ListGroup.Item key={x.key} style={{display: "flex", justifyContent: "space-between"}}>
-              <div style={{textAlign: "left", wordBreak: "break-all"}}>{"[" + x.key +  "]"} {x.path.join(" ") + x.value}</div>
+              <div style={{textAlign: "left", wordBreak: "break-word"}}>
+                <b>{"[" + x.key +  "] " + x.path.join(" > ")}</b>
+                <br />
+                <ReactMarkdown remarkPlugins={[gfm]} children={x.value}/>
+              </div>
               <div style={{flex:0.1}}>
               <Button data-key={x.key} variant={(x.delay) ? "warning" : "outline-warning"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onDelay}>Delay</Button>
               <Button data-key={x.key} variant={(x.done) ? "success" : "outline-success"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onDone}>Done</Button>
