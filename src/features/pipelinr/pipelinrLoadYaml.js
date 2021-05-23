@@ -42,18 +42,42 @@ function deepReduce(collection, fn, memo) {
 export function loadYaml(value = "") {
 
         let count = 0
-        let parents = 0
         value = value.split('\n').map( item => {
-            parents++
-            item = item.trimEnd()
-            if(item[item.length-1] === ":") {
-                //return item.slice(0, item.length-1) + " (line="+count+parents+"):" + "\n"
-                return item.slice(0, item.length-1) + ":" + "\n"
-            } else {
-                return item + " (line="+count+parents+")" + "\n"
-            }
+            let out = ""
             count++
-        }).join('')
+            item = item.trimEnd()
+            if(item[item.length-1] === ":" || item[item.length-1] === "|" || item[item.length-1] === ">") {
+                if (item[item.length-1] === "|" || item[item.length-1] === ">") {
+                    const tmp = item.slice(0, item.length-1).trimEnd()
+                    if (tmp[tmp.length-1] == ":") {
+                        out = item.slice(0, item.length-1) + " |"
+                    } else {
+                        const tmp2 = tmp.split(":")
+                        if (tmp2.length > 0 && tmp2[1] && tmp2[1].match("&")){
+                            const tmp3 = item.split(":")
+                            out = tmp3[0] + " (type=document)" + ":" + tmp3[1]
+                        } else {
+                            out = item.slice(0, item.length)
+                        }
+                    }
+                } else {
+                    out= item.slice(0, item.length)
+                }
+            } else {
+                if (item.trimStart()[2] === "*") {
+                    out = item.slice(0, item.length)
+                } else if (item) {
+                    const tmp = item.trimEnd().split(":")
+                    if (tmp.length > 0 && tmp[1] && tmp[1].match("&")){
+                        const tmp2 = item.split(":")
+                        out = tmp2[0] + " (type=recipe)" + ":" + tmp2[1]
+                    } else {
+                        out = item + " (line="+count+")"
+                    }
+                }
+            }
+            return out
+        }).join('\n')
 
         return new Promise((onResolve, onReject)=>{
             try {
