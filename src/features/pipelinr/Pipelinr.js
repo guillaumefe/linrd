@@ -27,6 +27,10 @@ import gfm from 'remark-gfm'
 export function Editor() {
   const dispatch = useDispatch()
   const value = useSelector(selectValue)
+  const onLoad = (editor) => {
+      editor.focus();
+      editor.navigateFileEnd();
+  }
   const onChange = (val) => {
           dispatch(displayError(""))
           dispatch(update(val))
@@ -49,6 +53,7 @@ export function Editor() {
         theme="github"
         value = {value}
         onChange={onChange}
+        onLoad={onLoad}
         name="editor"
         maxLines={Infinity}
         editorProps={{ $blockScrolling: true }}
