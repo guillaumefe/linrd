@@ -16,30 +16,34 @@ import {
   REGISTER
 } from "redux-persist";
 
-const persistConfig = {
-    key: 'root',
-    storage,
-    transforms: [
-        encryptTransform({
-            secretKey: 'my-super-secret-key',
-            onError: function (error) {
-                // Handle the error.
-            },
-        }),
-    ],
+export const store = (keypass) => {
+
+    const persistConfig = {
+        key: 'root',
+        storage,
+        transforms: [
+            encryptTransform({
+                secretKey: keypass,
+                onError: function (error) {
+                    // Handle the error.
+                    throw(error)
+                },
+            }),
+        ],
+    }
+
+    const persistedReducer = persistReducer(persistConfig, pipelinrReducer)
+
+    return configureStore({
+        reducer: {
+            pipelinr: persistedReducer,
+        },
+        middleware: getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+            }
+        })
+    });
 }
 
-const persistedReducer = persistReducer(persistConfig, pipelinrReducer)
-
-export const store = configureStore({
-  reducer: {
-    pipelinr: persistedReducer,
-  },
-  middleware: getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
-    }
-  })
-});
-
-export const persistor = persistStore(store)
+export const persistor = persistStore
