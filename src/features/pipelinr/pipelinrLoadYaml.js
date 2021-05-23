@@ -52,7 +52,13 @@ export function loadYaml(value = "") {
                     if (tmp[tmp.length-1] == ":") {
                         out = item.slice(0, item.length-1) + " |"
                     } else {
-                        out = item.slice(0, item.length)
+                        const tmp2 = tmp.split(":")
+                        if (tmp2.length > 0 && tmp2[1] && tmp2[1].match("&")){
+                            const tmp3 = item.split(":")
+                            out = tmp3[0] + " (type=document)" + ":" + tmp3[1]
+                        } else {
+                            out = item.slice(0, item.length)
+                        }
                     }
                 } else {
                     out= item.slice(0, item.length)
@@ -60,10 +66,14 @@ export function loadYaml(value = "") {
             } else {
                 if (item.trimStart()[2] === "*") {
                     out = item.slice(0, item.length)
-                } else if(item){
-                    out = item + " (line="+count+")"
-                } else {
-                    //out = "- " + item
+                } else if (item) {
+                    const tmp = item.trimEnd().split(":")
+                    if (tmp.length > 0 && tmp[1] && tmp[1].match("&")){
+                        const tmp2 = item.split(":")
+                        out = tmp2[0] + " (type=recipe)" + ":" + tmp2[1]
+                    } else {
+                        out = item + " (line="+count+")"
+                    }
                 }
             }
             return out

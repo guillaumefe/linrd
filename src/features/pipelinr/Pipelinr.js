@@ -28,18 +28,20 @@ export function Editor() {
   const dispatch = useDispatch()
   const value = useSelector(selectValue)
   const onChange = (val) => {
-    dispatch(displayError(""))
-    dispatch(update(val))
-    if (val) {
-        loadYaml(val).then((tasks)=>{
-            dispatch(updateTasks(tasks))
-        }, (err) => {
-            dispatch(updateTasks([]))
-            dispatch(displayError(err.message))
-        }) 
-    } else {
-        dispatch(updateTasks([]))
-    }
+          dispatch(displayError(""))
+          dispatch(update(val))
+          if (val) {
+                  loadYaml(val).then((tasks)=>{
+                      setTimeout(() => {
+                          dispatch(updateTasks(tasks))
+                      }, 0)
+                  }, (err) => {
+                      dispatch(updateTasks([]))
+                      dispatch(displayError(err.message))
+                  }) 
+          } else {
+              dispatch(updateTasks([]))
+          }
   }
   return (
       <AceEditor style={{width:"100%"}}

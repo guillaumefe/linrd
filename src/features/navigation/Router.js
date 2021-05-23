@@ -29,13 +29,13 @@ export const Router = () => {
 
 
 function Home() {
+    //<Menu />
     return (
       <main style={{display:"flex"}}>
         <section style={{ flex: 1, minWidth:"50%" }}>
             <Editor/>
         </section>
         <section style={{ flex:1, maxWidth:"50%" }}>
-            <Menu />
             <Viewer />
         </section>
       </main>
