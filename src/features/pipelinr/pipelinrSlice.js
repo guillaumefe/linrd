@@ -7,6 +7,7 @@ import { loadYaml } from './pipelinrLoadYaml';
 const initialState = {
     tasks: [],
     value: "",
+    searchterm: "ardi",
     status: "",
     error: "",
 };
@@ -47,6 +48,9 @@ export const pipelinrSlice = createSlice({
         updateTasks: (state, action) => {
             state.tasks = action.payload;
         },
+        updateSearchTerm: (state, action) => {
+            state.searchterm = action.payload;
+        },
         updateTask: (state, action) => {
             //let result = state.tasks.map( task => (task.key.join() === action.payload.key.join()) ? action.payload : task)
             //state.tasks = result;
@@ -82,9 +86,10 @@ export const pipelinrSlice = createSlice({
   //},
 });
 
-export const { update, updateTasks, updateTask, displayError } = pipelinrSlice.actions;
+export const { update, updateTasks, updateSearchTerm, displayError } = pipelinrSlice.actions;
 
 export const selectValue = (state) => state.pipelinr.value;
+export const selectSearchTerm = (state) => state.pipelinr.searchterm;
 export const selectTasks = (state) => state.pipelinr.tasks;
 export const selectError = (state) => state.pipelinr.error.toString();
 

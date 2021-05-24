@@ -9,7 +9,8 @@ import {
   displayError,
   selectTasks,
   selectError,
-  selectValue
+  selectValue,
+  selectSearchTerm
 } from './pipelinrSlice';
 //import styles from './Pipelinr.module.css';
 
@@ -64,6 +65,7 @@ export function Editor() {
 export function Viewer() {
   const tasks = useSelector(selectTasks)
   const value = useSelector(selectValue)
+  const searchterm = useSelector(selectSearchTerm)
   const error = useSelector(selectError)
   const dispatch = useDispatch()
 
@@ -115,7 +117,7 @@ export function Viewer() {
   //<pr>{x.value}</pr>
   return (
       <ListGroup id="result" style={{padding: "10px" }}>
-      {tasks.map( x => {
+      {tasks.filter( x => (x.path.join(" ") + x.value).match(searchterm) ).map( x => {
           if(x.parent['type'] !== "recipe" && x.parent['type'] !== "document") {
               return <ListGroup.Item key={x.key} style={{display: "flex", justifyContent: "space-between"}}>
                   <div style={{textAlign: "left", wordBreak: "break-word"}}>
