@@ -12,7 +12,7 @@ How it works:
     - clear localstorage: &clear_localstorage
         - open your browser
         - right click on the interface
-        - select "web console"
+        - select "inspect?"
         - the web console is opening &-
         - on the web console:
             - select the tab "console"
