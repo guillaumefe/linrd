@@ -116,19 +116,21 @@ export function Viewer() {
   return (
       <ListGroup id="result" style={{padding: "10px" }}>
       {tasks.map( x => {
-          return <ListGroup.Item key={x.key} style={{display: "flex", justifyContent: "space-between"}}>
-              <div style={{textAlign: "left", wordBreak: "break-word"}}>
-                <b>{"[" + x.key +  "] " + x.path.join(" > ")}</b>
-                <br />
-                <ReactMarkdown remarkPlugins={[gfm]} children={x.value}/>
-              </div>
-              <div style={{flex:0.1}}>
-              <Button data-key={x.key} variant={(x.delay) ? "warning" : "outline-warning"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onDelay}>Delay</Button>
-              <Button data-key={x.key} variant={(x.done) ? "success" : "outline-success"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onDone}>Done</Button>
-              <Button data-key={x.key} variant={(x.await) ? "primary" : "outline-primary"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onAwait}>Await</Button>
-              <Button data-key={x.key} variant={(x.cancel) ? "info" : "outline-info"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onCancel}>Cancel</Button>
-              </div>
-              </ListGroup.Item>
+          if(x.parent['type'] !== "recipe" && x.parent['type'] !== "document") {
+              return <ListGroup.Item key={x.key} style={{display: "flex", justifyContent: "space-between"}}>
+                  <div style={{textAlign: "left", wordBreak: "break-word"}}>
+                  <b>{"[" + x.key +  "] " + x.path.join(" > ")}</b>
+                  <br />
+                  <ReactMarkdown remarkPlugins={[gfm]} children={x.value}/>
+                  </div>
+                  <div style={{flex:0.1}}>
+                  <Button data-key={x.key} variant={(x.delay) ? "warning" : "outline-warning"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onDelay}>Delay</Button>
+                  <Button data-key={x.key} variant={(x.done) ? "success" : "outline-success"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onDone}>Done</Button>
+                  <Button data-key={x.key} variant={(x.await) ? "primary" : "outline-primary"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onAwait}>Await</Button>
+                  <Button data-key={x.key} variant={(x.cancel) ? "info" : "outline-info"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onCancel}>Cancel</Button>
+                  </div>
+                  </ListGroup.Item>
+          }
       })}
       <pre>{error}</pre>
       </ListGroup>

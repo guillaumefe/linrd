@@ -86,20 +86,34 @@ export function loadYaml(value = "") {
                     const output = deepReduce(doc, (memo, value, path) => {
                         if (value && typeof value === "string") {
                             const regExp = /\(([^)]+)\)/g;
-                            var matches = [], params = {} , m;
+                            let matches = [], params = {} , m;
                             while(m=regExp.exec(value)) {
                                 matches.push(m[1]);
                             }
                             matches = matches.map( item => {
                                 const parts = item.split('=')
-                                const part1 = parts[0].toString()
-                                const part2 = parts[1].toString()
-                                params[part1] = part2   
+                                if(parts.length > 1 && parts[1].trim()) { 
+                                    const part1 = parts[0].toString()
+                                    const part2 = parts[1].toString()
+                                    params[part1] = part2   
+                                    value = value.replace("("+item+")", '').trimEnd()
+                                }
                             })
-                            const regex = /\(.*\)/gi;
-                            value = value.replace(regex, '').trimEnd()
+                            let p_matches = [], p_params = {} , p_m;
+                            while(p_m=regExp.exec(path.join(" "))) {
+                                p_matches.push(p_m[1]);
+                            }
+                            p_matches = p_matches.map( item => {
+                                const parts = item.split('=')
+                                if(parts.length > 1 && parts[1].trim()) { 
+                                    const part1 = parts[0].toString()
+                                    const part2 = parts[1].toString()
+                                    p_params[part1] = part2   
+                                }
+                            })
                             const task = {
                                 ...params,
+                                parent: p_params,
                                 key: count++,
                                 done: (value[value.length-1] === "-" && value[value.length-2] === "-") ? true: false,
                                 delay: (value[value.length-1] === "-" && value[value.length-2] === "*" ) ? true: false,
