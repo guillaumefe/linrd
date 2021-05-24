@@ -2,7 +2,7 @@ Linrd.ml:
 
     - is a way to documente any project
     - uses deeped nested lists, knowed as "pipelines", as input
-    - serves next task(s) to do, as output
+    - serves next task(s), as output
     - is released for people to cope with life through better organization
 
 How it works:
