@@ -43,13 +43,14 @@ How it works:
                             - as new bullets point
                         - objects
                         - arrays
+                    - every action is expected in order
     - you can use the full YAML specification:
         - but ">" acts like "|" (if it's not, it's a bug!)
     - your changes are persistent and will be preserved reboot after reboot:
         - IF you want to get rid of a previous session:
             - *clear_localstorage
     - you can share pipelines between people:
-        - a pipeline should self-contain all needed information
+        - a pipeline should be self-contained for all needed information
         - it's easy to copy/paste a pipeline from one Linrd instance to another Linrd instance:
             - test:
                 - open Linrd in multiple browsers
