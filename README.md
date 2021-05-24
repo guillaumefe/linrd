@@ -100,11 +100,11 @@ How it works:
                 - enter the searchterm monday : |
                     ```
                     ##### SELECTED BUTTON: null
-                    [23] How it works > as you see > with a bit of imagination > exmples > timetable > monday
+                    [6] timetable > monday
                     IT projects
 
                     ##### SELECTED BUTTON: Await
-                    [24] How it works > as you see > with a bit of imagination > exmples > timetable > monday
+                    [7] timetable > monday
                     [ ] twd
                     [X] futurama, waiting for more seasons &-
                     ```
