@@ -117,7 +117,7 @@ export function Viewer() {
   //<pr>{x.value}</pr>
   return (
       <ListGroup id="result" style={{padding: "10px" }}>
-      {tasks.filter( x => (x.path.join(" ") + x.value).match(searchterm) ).map( x => {
+      {tasks.filter( x => ( ! searchterm) ? true : (x.path.join(" ") + x.value).match(searchterm) ).map( x => {
           if(x.parent['type'] !== "recipe" && x.parent['type'] !== "document") {
               return <ListGroup.Item key={x.key} style={{display: "flex", justifyContent: "space-between"}}>
                   <div style={{textAlign: "left", wordBreak: "break-word"}}>
