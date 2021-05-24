@@ -11,7 +11,7 @@ How it works:
 
     - clear localstorage: &clear_localstorage
         - open chrome:
-            - IF firefox: break (doesnt work)
+            - IF firefox: break (do "clear browsing data" using the GUI instead)
         - right click on the interface
         - select "inspect?"
         - the web console is opening &-
