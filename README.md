@@ -57,6 +57,7 @@ How it works:
                     * [ ] milk
                     * [ ] honey
                     * [ ] vegetables
+                    
                 - my watch list: &series |
                     * [ ] twd
                     * [X] futurama, waiting for more seasons &-
