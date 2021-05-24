@@ -3,7 +3,7 @@ Linrd.ml:
     - is a way to documente any project
     - uses deeped nested lists, knowed as "pipelines", as input
     - serves next task(s), as output
-    - is released for people to cope with life through better organization
+    - is provided to people who need better organization
 
 How it works:
 
@@ -44,6 +44,62 @@ How it works:
                         - objects
                         - arrays
                     - every action is expected in order
+        - with a bit of imagination:
+            - you should find new usages
+            - exmples:
+                - my shopping list: &shopping |
+                    * [ ] egg
+                    * [ ] bread
+                    * [ ] butter
+                    * [ ] milk
+                    * [ ] honey
+                    * [ ] vegetables
+                - my watch list: &series |
+                    * [ ] twd
+                    * [X] futurama, waiting for more seasons &-
+                - my hobby: &code
+                    - documente pipelinr
+                    - commit linrd.ml
+                    - watch megaquizz
+                - my professional carrier: &work
+                    - work on IT projects
+                - timetable:
+                    - monday:
+                        - *work
+                        - *series
+                    - tuesday:
+                        - *work
+                        - *code
+                    - wednesday:
+                        - *work
+                        - *series
+                    - thursday:
+                        - *work
+                        - *code
+                    - friday:
+                        - *work
+                        - *shopping
+                        - *code
+                    - saturday:
+                        - *code
+                        - *shopping
+                    - sunday:
+                        - *series
+                        - *work
+                - test:
+                    # expected output:
+                    - searchterm = "monday": &output |
+                        ----
+                        SELECTED BUTTON: null
+                        [23] How it works > as you see > with a bit of imagination > exmples > timetable > monday
+                        IT projects
+                        ---
+                        SELECTED BUTTON: Await
+                        [24] How it works > as you see > with a bit of imagination > exmples > timetable > monday
+                        [ ] twd
+                        [X] futurama, waiting for more seasons &-
+                        ----
+                        
     - you can use the full YAML specification:
         - but ">" acts like "|" (if it's not, it's a bug!)
     - your changes are persistent and will be preserved reboot after reboot:
@@ -54,6 +110,23 @@ How it works:
         - it's easy to copy/paste a pipeline from one Linrd instance to another Linrd instance:
             - test:
                 - open Linrd in multiple browsers
+                
+    - Linrd :
+        - is not fully ready
+        - is already usable
+    - the work in progress is about:
+        - real time database over the network with end-to-end encryption clientside
+        - reverse proxying one-time-generated URL linked to slots in db
+        - add "sprint" feature: :
+            - the main interface won't hold done/cancel/await/... anymore
+            - but instead:
+                - start:
+                    - onClick:
+                        - start Sprint interface, contains:
+                            - chronometer
+                            - progression percentage
+                            - button stop
+    - And more
 
 ---
 
