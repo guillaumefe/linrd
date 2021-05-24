@@ -1,6 +1,6 @@
 # ⚠️ Known issues on Safari, works well with firefox, chrome
 
-Linrd.ml:
+[Linrd.ml](http://linrd.ml):
 
     - is a way to documente any project
     - uses deeped nested lists, knowed as "pipelines", as input
