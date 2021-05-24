@@ -44,9 +44,10 @@ How it works:
                         - objects
                         - arrays
                     - every action is expected in order
+    - furthermore:
         - with a bit of imagination:
             - you should find new usages
-            - exmples:
+            - example: &example |
                 - my shopping list: &shopping |
                     * [ ] egg
                     * [ ] bread
@@ -86,20 +87,24 @@ How it works:
                     - sunday:
                         - *series
                         - *work
-                - test:
-                    # expected output:
-                    - searchterm = "monday": &output |
-                        ----
-                        SELECTED BUTTON: null
-                        [23] How it works > as you see > with a bit of imagination > exmples > timetable > monday
-                        IT projects
-                        ---
-                        SELECTED BUTTON: Await
-                        [24] How it works > as you see > with a bit of imagination > exmples > timetable > monday
-                        [ ] twd
-                        [X] futurama, waiting for more seasons &-
-                        ----
-                        
+            - test:
+                # expected output:
+                - open http://linrd.ml
+                - paste:
+                    - *example
+
+                - enter the searchterm monday : |
+                    ```
+                    ##### SELECTED BUTTON: null
+                    [23] How it works > as you see > with a bit of imagination > exmples > timetable > monday
+                    IT projects
+
+                    ##### SELECTED BUTTON: Await
+                    [24] How it works > as you see > with a bit of imagination > exmples > timetable > monday
+                    [ ] twd
+                    [X] futurama, waiting for more seasons &-
+                    ```
+
     - you can use the full YAML specification:
         - but ">" acts like "|" (if it's not, it's a bug!)
     - your changes are persistent and will be preserved reboot after reboot:
@@ -113,7 +118,7 @@ How it works:
                 
     - Linrd :
         - is not fully ready
-        - is already usable
+        - is quite already usable
     - the work in progress is about:
         - real time database over the network with end-to-end encryption clientside
         - reverse proxying one-time-generated URL linked to slots in db
