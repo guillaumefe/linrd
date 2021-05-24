@@ -7,7 +7,7 @@ import { loadYaml } from './pipelinrLoadYaml';
 const initialState = {
     tasks: [],
     value: "",
-    searchterm: "ardi",
+    searchterm: "",
     status: "",
     error: "",
 };
