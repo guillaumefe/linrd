@@ -1,3 +1,5 @@
+# ⚠️ Known issues on Safari, works well with firefox, chrome
+
 Linrd.ml:
 
     - is a way to documente any project
