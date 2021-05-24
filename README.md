@@ -1,3 +1,61 @@
+Linrd.ml:
+
+    - is a way to documente any project
+    - use deeped nested lists, knowed as "pipelines", as input
+    - serve next task(s) to do, as output
+    - is released for people to cope with life through better organization
+
+How it works:
+
+    - clear localstorage: &clear_localstorage
+        - open your browser
+        - right click on the interface
+        - select "web console"
+        - the web console is opening &-
+        - on the web console:
+            - select the tab "console"
+            - write the following command : >
+                ```
+                localStorage.clear()
+                ```
+            - you have successfully cleared the local storage
+
+    - this is a pipeline:
+        - example : &ref |
+            - write hello:
+                - write :
+                    - h
+                    - e
+                    - l
+                    - l
+                    - o
+            - say world:
+                - have a small pursed mouth
+                - expel air by letting your vocal cords vibrate
+                - let more and more air pass through, opening your mouth gradually, as the sound spreads
+    - as you see:
+        - crafting a pipeline is about detailing how to do something:
+            - step by step:
+                - using nested list:
+                    - each new children clarifies the previous entry:
+                    - each entry can add one or more:
+                        - clarification:
+                            - as new bullets point
+                        - objects
+                        - arrays
+    - you can use the full YAML specification:
+        - but ">" acts like "|" (if it's not, it's a bug!)
+    - your changes are persistent and will be preserved reboot after reboot:
+        - IF you want to get rid of a previous session:
+            - *clear_localstorage
+    - you can share pipelines between people:
+        - a pipeline should self-contain all needed information
+        - it's easy to copy/paste a pipeline from one Linrd instance to another Linrd instance:
+            - test:
+                - open Linrd in multiple browsers
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
 ## Available Scripts
