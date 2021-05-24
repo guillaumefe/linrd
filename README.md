@@ -10,7 +10,8 @@ Linrd.ml:
 How it works:
 
     - clear localstorage: &clear_localstorage
-        - open your browser
+        - open chrome:
+            - IF firefox: break (doesnt work)
         - right click on the interface
         - select "inspect?"
         - the web console is opening &-
