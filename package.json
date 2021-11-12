@@ -6,7 +6,7 @@
     "url": "https://spdx.org/licenses/GPL-3.0-or-later.html"
   },
   "private": true,
-  "engines": { "node": "17.0.1" },
+  "engines": { "node": "16.0.1" },
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/jest-dom": "^4.2.4",
@@ -29,7 +29,7 @@
     "remark-gfm": "^1.0.0"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
+    "start": "react-scripts start",
     "build": "GENERATE_SOURCEMAP=false && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
