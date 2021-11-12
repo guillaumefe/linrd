@@ -28,7 +28,7 @@ export const Menu = () => {
         <Form inline style={{flex:1}}>
         <FormControl onChange={onChange} type="text" placeholder="Search" className="mr-sm-2" />
 
-	<div style={{display:"flex", wrap:"wrap", gap: "10px", display:"non"}}>
+	<div style={{display:"flex", wrap:"wrap", gap: "10px", display:"none"}}>
 	    <span>
 	      <input className="form-check-input" type="checkbox" value="" id="checkDoc" />
 	      <label className="form-check-label" for="checkDoc">
