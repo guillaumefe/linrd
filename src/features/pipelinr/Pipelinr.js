@@ -114,6 +114,14 @@ export function Viewer() {
         onAct(event, "*-", origin)
     }
 
+    const onDoc = (event) => {
+        onAct(event, "!-", origin)
+    }
+
+    const onGoing = (event) => {
+        onAct(event, "+-", origin)
+    }
+
   //<pr>{x.value}</pr>
   return (
       <ListGroup id="result" style={{padding: "10px" }}>
@@ -126,10 +134,12 @@ export function Viewer() {
                   <ReactMarkdown remarkPlugins={[gfm]} children={x.value}/>
                   </div>
                   <div style={{flex:0.1}}>
-                  <Button data-key={x.key} variant={(x.delay) ? "warning" : "outline-warning"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onDelay}>Delay</Button>
-                  <Button data-key={x.key} variant={(x.done) ? "success" : "outline-success"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onDone}>Done</Button>
-                  <Button data-key={x.key} variant={(x.await) ? "primary" : "outline-primary"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onAwait}>Await</Button>
-                  <Button data-key={x.key} variant={(x.cancel) ? "info" : "outline-info"} size="sm" style={{width:"60px", marginBottom: "1px"}} onClick={onCancel}>Cancel</Button>
+                  <Button data-key={x.key} variant={(x.doc) ? "info" : "outline-info"} size="sm" style={{width:"70px", marginBottom: "1px"}} onClick={onDoc}>Doc !</Button>
+                  <Button data-key={x.key} variant={(x.ongoing) ? "success" : "outline-success"} size="sm" style={{width:"70px", marginBottom: "1px"}} onClick={onGoing}>Ongoing</Button>
+                  <Button data-key={x.key} variant={(x.delay) ? "warning" : "outline-warning"} size="sm" style={{width:"70px", marginBottom: "1px"}} onClick={onDelay}>Delay</Button>
+                  <Button data-key={x.key} variant={(x.await) ? "primary" : "outline-primary"} size="sm" style={{width:"70px", marginBottom: "1px"}} onClick={onAwait}>Await</Button>
+                  <Button data-key={x.key} variant={(x.done) ? "danger" : "outline-danger"} size="sm" style={{width:"70px", marginBottom: "1px"}} onClick={onDone}>Done</Button>
+                  <Button data-key={x.key} variant={(x.cancel) ? "dark" : "outline-dark"} size="sm" style={{width:"70px", marginBottom: "1px"}} onClick={onCancel}>Cancel</Button>
                   </div>
                   </ListGroup.Item>
           }

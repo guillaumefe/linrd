@@ -115,6 +115,8 @@ export function loadYaml(value = "") {
                                 ...params,
                                 parent: p_params,
                                 key: count++,
+                                doc: (value[value.length-1] === "-" && value[value.length-2] === "!") ? true: false,
+                                ongoing: (value[value.length-1] === "-" && value[value.length-2] === "+") ? true: false,
                                 done: (value[value.length-1] === "-" && value[value.length-2] === "-") ? true: false,
                                 delay: (value[value.length-1] === "-" && value[value.length-2] === "*" ) ? true: false,
                                 cancel: (value[value.length-1] === "-" && value[value.length-2] === "x" ) ? true: false,
