@@ -6,10 +6,12 @@
     "url": "https://spdx.org/licenses/GPL-3.0-or-later.html"
   },
   "private": true,
-  "engines": { "node": "16.13.0" },
+  "engines": {
+    "node": "16.13.0"
+  },
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
-    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "ace-builds": "^1.4.12",
@@ -23,7 +25,7 @@
     "react-markdown": "^6.0.2",
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.0",
     "redux-persist": "^6.0.0",
     "redux-persist-transform-encrypt": "^3.0.1",
     "remark-gfm": "^1.0.0"
