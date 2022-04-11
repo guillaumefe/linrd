@@ -1,5 +1,4 @@
 
-
 # How to build a project
 
 - get the idea
@@ -7,7 +6,7 @@
 - process it
 
 # How to pipeline
-
+```
 - get tasks: |
     - [x] task1
     - [x] task2
@@ -22,8 +21,8 @@
 - call it a project: |
     - project:
         - [task1, task2]
-
 - format as YAML
+```
 
 - **Linrd.ml** http://linrd.ml
 
