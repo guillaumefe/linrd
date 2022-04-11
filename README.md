@@ -31,4 +31,4 @@
     - uses deeped nested lists, knowed as "pipelines", as input
     - serves next task(s), as output
     - is provided to people who need better organization
-    - is secure by design https://linrd.ml
+    - is secure by design
