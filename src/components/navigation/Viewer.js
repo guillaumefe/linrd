@@ -81,7 +81,7 @@ export function Viewer() {
           if(x.parent['type'] !== "recipe" && x.parent['type'] !== "document") {
               return <ListGroup.Item key={x.key} style={{display: "flex", justifyContent: "space-between"}}>
                   <div style={{textAlign: "left", wordBreak: "break-word"}}>
-                  <b>{"[" + x.key +  "] " + x.path.join(" > ")}</b>
+                  <b>{"# " + x.path.join(" > ")}</b>
                   <br />
                   <ReactMarkdown remarkPlugins={[gfm]} children={x.value}/>
                   </div>
