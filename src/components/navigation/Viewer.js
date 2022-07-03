@@ -151,7 +151,7 @@ export function Viewer() {
                   <i>{"# " + '[' + counter + '] ' + x.path.join(" > ")}</i>
                   <br />
                   <br />
-                  <b style={{"text-transform": "capitalize"}}><ReactMarkdown remarkPlugins={[gfm]} children={x.value}/></b>
+                  <p style={{"text-transform": "capitalize"}}><ReactMarkdown remarkPlugins={[gfm]} children={x.value}/></p>
 	          <form>
 		    <p style={{"width": "300px"}}>
 		      <span>Duration in minutes : </span>
