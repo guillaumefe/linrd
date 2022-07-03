@@ -136,7 +136,7 @@ export function Viewer() {
       </section>
       <section>
       <ListGroup id="result" style={{padding: "10px" }}>
-      {tasks.filter( x => (x.path.join(" ") + x.value).toString().match(searchterm) ).map( x => {
+      {tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match(searchterm.toLowerCase()) ).map( x => {
           if(x.parent['type'] !== "recipe" && x.parent['type'] !== "document") {
 	      let counter = x.key + 1
               return <section>
