@@ -25,6 +25,42 @@ export function Viewer() {
   const error = useSelector(selectError)
   const dispatch = useDispatch()
 
+    const onValue = (event, type) => {
+        // get from left
+        let count = 1
+        const origin = tasks.filter(task => task.key.toString() === event.target.dataset.key.toString())[0];
+        const result = value.split('\n').map( line => {
+            if (count.toString() === parseInt(origin.line, 10).toString()){
+                if(line[line.length-1] === ":") {
+			//...
+                } else {
+	            let reg = ""
+		    if (type === 'duration') {
+		      reg = /\(duration=.*?\)/
+		    } else if (type === 'cost') {
+			reg = /\(cost=.*?\)/
+		    }
+		    if (reg && line.match(reg)) {
+		      line = line.trimEnd().replace(reg, "");
+		    }
+                    line = line.trimEnd() + " ("+type+"=" + (event.target.value) + ")"
+                }
+            }
+            count++
+            return line
+        })
+        // update right
+        const val = result.join("\n")
+        dispatch(update(val))
+        loadYaml(val).then((tasks)=>{
+            dispatch(updateTasks(tasks))
+        }, (err) => {
+            dispatch(updateTasks([]))
+            dispatch(displayError(err))
+        }) 
+    }
+
+
     const onAct = (event, symbol) => {
         // get from left
         let count = 1
@@ -55,35 +91,71 @@ export function Viewer() {
     }
 
     const onDone = (event) => {
-        onAct(event, "--", origin)
+        onAct(event, "--")
     }
 
     const onAwait = (event) => {
-        onAct(event, "&-", origin)
+        onAct(event, "&-")
     }
 
     const onCancel = (event) => {
-        onAct(event, "x-", origin)
+        onAct(event, "x-")
     }
 
     const onDelay = (event) => {
-        onAct(event, "*-", origin)
+        onAct(event, "*-")
     }
 
     const onDoc = (event) => {
-        onAct(event, "+-", origin)
+        onAct(event, "+-")
+    }
+
+    const onDuration = (event) => {
+        onValue(event, 'duration')
+    }
+
+    const onCost = (event) => {
+        onValue(event, 'cost')
     }
 
   //<pr>{x.value}</pr>
+
+  let pipeline_duration = 0
+  let pipeline_cost = 0
+  for (let task in tasks) {
+	  if (tasks[task].duration) 
+    		pipeline_duration += Number(tasks[task].duration) 
+	  if (tasks[task].cost) 
+    		pipeline_cost += Number(tasks[task].cost) 
+  }
+
   return (
+      <main>
+      <section style={{"text-align": "left", "padding":"1em"}}>
+        <b><code>{tasks.length + " tasks" + " | " + Number(pipeline_duration/60).toFixed(2) + " hours | " + pipeline_cost + " $"}</code></b>
+      </section>
+      <section>
       <ListGroup id="result" style={{padding: "10px" }}>
       {tasks.filter( x => (x.path.join(" ") + x.value).toString().match(searchterm) ).map( x => {
           if(x.parent['type'] !== "recipe" && x.parent['type'] !== "document") {
-              return <ListGroup.Item key={x.key} style={{display: "flex", justifyContent: "space-between"}}>
+	      let counter = x.key + 1
+              return <section>
+		  <ListGroup.Item key={x.key} style={{display: "flex", justifyContent: "space-between"}}>
                   <div style={{textAlign: "left", wordBreak: "break-word"}}>
-                  <b>{"# " + x.path.join(" > ")}</b>
+                  <i>{"# " + '[' + counter + '] ' + x.path.join(" > ")}</i>
                   <br />
-                  <ReactMarkdown remarkPlugins={[gfm]} children={x.value}/>
+                  <br />
+                  <b style={{"text-transform": "capitalize"}}><ReactMarkdown remarkPlugins={[gfm]} children={x.value}/></b>
+	          <form>
+		    <p style={{"width": "300px"}}>
+		      <span>Duration in minutes : </span>
+		      <input data-key={x.key} value = {x.duration} style={{"border":"none"}} placeholder="Duration in minutes" onChange={onDuration}></input>
+		    </p>
+		    <p style={{"width": "300px"}}>
+		      <span>Cost in dollars : </span>
+		      <input data-key={x.key} value = {x.cost} style={{"border":"none"}} data-key={x.key} placeholder="Cost in dollars" onChange={onCost}></input>
+		    </p>
+		  </form>
                   </div>
                   <div style={{flex:0.1}}>
                   <Button data-key={x.key} variant={(x.doc) ? "info" : "outline-info"} size="sm" style={{width:"70px", marginBottom: "1px"}} onClick={onDoc}>Doc !</Button>
@@ -93,9 +165,12 @@ export function Viewer() {
                   <Button data-key={x.key} variant={(x.cancel) ? "dark" : "outline-dark"} size="sm" style={{width:"70px", marginBottom: "1px"}} onClick={onCancel}>Cancel</Button>
                   </div>
                   </ListGroup.Item>
+                  </section>
           }
       })}
       <pre>{error}</pre>
       </ListGroup>
+      </section>
+      </main>
   );
 }
