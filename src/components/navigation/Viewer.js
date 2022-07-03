@@ -129,6 +129,11 @@ export function Viewer() {
     		pipeline_cost += Number(tasks[task].cost) 
   }
 
+  function escapeRegExp(input) {
+	const source = typeof input === 'string' || input instanceof String ? input : '';
+	return source.replace(/[-[/\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+  }
+
   return (
       <main>
       <section style={{"text-align": "left", "padding":"1em"}}>
@@ -136,7 +141,8 @@ export function Viewer() {
       </section>
       <section>
       <ListGroup id="result" style={{padding: "10px" }}>
-      {tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match(searchterm.toLowerCase()) ).map( x => {
+      {
+	  tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match( escapeRegExp(searchterm.toLowerCase())) ).map( x => {
           if(x.parent['type'] !== "recipe" && x.parent['type'] !== "document") {
 	      let counter = x.key + 1
               return <section>
@@ -167,7 +173,8 @@ export function Viewer() {
                   </ListGroup.Item>
                   </section>
           }
-      })}
+      })
+      }
       <pre>{error}</pre>
       </ListGroup>
       </section>
