@@ -39,6 +39,8 @@ export function Viewer() {
 		      reg = /\(duration=.*?\)/
 		    } else if (type === 'cost') {
 			reg = /\(cost=.*?\)/
+		    } else if (type === 'notes') {
+			reg = /\(notes=.*?\)/
 		    }
 		    if (reg && line.match(reg)) {
 		      line = line.trimEnd().replace(reg, "");
@@ -118,15 +120,22 @@ export function Viewer() {
         onValue(event, 'cost')
     }
 
+    const onNotes = (event) => {
+	onValue(event, 'notes')
+    }
+
   //<pr>{x.value}</pr>
 
   let pipeline_duration = 0
   let pipeline_cost = 0
+  let pipeline_notes = 0
   for (let task in tasks) {
 	  if (tasks[task].duration) 
     		pipeline_duration += Number(tasks[task].duration) 
 	  if (tasks[task].cost) 
     		pipeline_cost += Number(tasks[task].cost) 
+	  if (tasks[task].notes) 
+    		pipeline_notes += 1 
   }
 
   function escapeRegExp(input) {
@@ -138,6 +147,8 @@ export function Viewer() {
       <main>
       <section style={{"text-align": "left", "padding":"1em"}}>
         <b><code>{tasks.length + " tasks" + " | " + Number(pipeline_duration/60).toFixed(2) + " hours | " + pipeline_cost + " $"}</code></b>
+	<br/>
+        <b><code style={{"color" : "grey"}}>{pipeline_notes + " notes"}</code></b>
       </section>
       <section>
       <ListGroup id="result" style={{padding: "10px" }}>
@@ -154,12 +165,16 @@ export function Viewer() {
                   <p style={{"text-transform": "capitalize"}}><ReactMarkdown remarkPlugins={[gfm]} children={x.value}/></p>
 	          <form>
 		    <p style={{"width": "300px"}}>
-		      <span>Duration in minutes : </span>
+		      <b>Duration in minutes : </b>
 		      <input data-key={x.key} value = {x.duration} style={{"border":"none"}} placeholder="Duration in minutes" onChange={onDuration}></input>
 		    </p>
 		    <p style={{"width": "300px"}}>
-		      <span>Cost in dollars : </span>
+		      <b>Cost in dollars : </b>
 		      <input data-key={x.key} value = {x.cost} style={{"border":"none"}} data-key={x.key} placeholder="Cost in dollars" onChange={onCost}></input>
+		    </p>
+		    <p style={{"width": "300px"}}>
+		      <b>Notes : </b>
+		      <input data-key={x.key} value = {x.notes} style={{"border":"none"}} data-key={x.key} placeholder="Your notes" onChange={onNotes}></input>
 		    </p>
 		  </form>
                   </div>
