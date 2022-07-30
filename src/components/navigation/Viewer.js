@@ -153,7 +153,7 @@ export function Viewer() {
       <section>
       <ListGroup id="result" style={{padding: "10px" }}>
       {
-	  tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match( escapeRegExp(searchterm.toLowerCase())) ).map( x => {
+	 (! tasks.length && "You're done :)") || [tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match( escapeRegExp(searchterm.toLowerCase())) )[0]].map( x => {
           if(x.parent['type'] !== "recipe" && x.parent['type'] !== "document") {
 	      let counter = x.key + 1
               return <section>
