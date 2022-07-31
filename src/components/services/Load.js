@@ -126,6 +126,8 @@ export function loadYaml(value = "") {
                             if(!task.done && !task.cancel) 
                                 memo.push(task)
                         }
+			memo.sort( (a,b) => (parseInt(a.duration) || 0) - (parseInt(b.duration) || 0) )
+			memo.sort( (a,b) => Date.parse(a.deadline) - Date.parse(b.deadline) )
                         return memo
                     }, []);
                     onResolve(output)

@@ -24,7 +24,10 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export function Viewer() {
 
-  const tasks = useSelector(selectTasks)
+  const _tasks = useSelector(selectTasks)
+
+  const tasks = [..._tasks]
+
   const value = useSelector(selectValue)
   const searchterm = useSelector(selectSearchTerm)
   const error = useSelector(selectError)
@@ -221,13 +224,10 @@ export function Viewer() {
 	return source.replace(/[-[/\]{}()*+?.,\\^$|#\s]/g, '\\$&');
   }
 
-  const _tasks = []
-  let counter = 0
-
   function displayTask(x) {
           if(x.parent['type'] !== "recipe" && x.parent['type'] !== "document") {
               return <section>
-		  <ListGroup.Item key={counter++} style={{display: "flex", justifyContent: "space-between"}}>
+		  <ListGroup.Item key={x.key} style={{display: "flex", justifyContent: "space-between"}}>
                   <div style={{textAlign: "left", wordBreak: "break-word"}}>
                   <i>{"# " + x.path.join(" > ")}</i>
                   <br />
