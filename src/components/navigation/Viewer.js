@@ -8,7 +8,8 @@ import {
   selectTasks,
   selectError,
   selectValue,
-  selectSearchTerm
+  selectSearchTerm,
+  selectPointer
 } from '../helpers/Reducer';
 
 import ListGroup from "react-bootstrap/ListGroup"
@@ -25,7 +26,54 @@ export function Viewer() {
   const error = useSelector(selectError)
   const dispatch = useDispatch()
 
-    const onValue = (event, type) => {
+  const getPointer = () => {
+	  let pointer = -1
+	  for (let index in tasks) {
+	    const reg = /-$/
+            const task = tasks[index]
+	    if (! task.value.match(reg)) {
+	      pointer = index
+              break
+	    }
+	  }
+	  if (pointer === -1) {
+	    for (let index in tasks) {
+	      const reg = /[*&+]-$/
+              const task = tasks[index]
+	      if (task.value.match(reg)) {
+                resetSprint()
+	      }
+	    }
+	  }
+	  for (let index in tasks) {
+	    const reg = /-$/
+            const task = tasks[index]
+	    if (! task.value.match(reg)) {
+	      pointer = index
+              break
+	    }
+	  }
+	  return pointer
+  }
+
+  const resetSprint = () => {
+        // get from left
+	const reg = /[*&+]-$/
+        const result = value.split('\n').map( line => {
+            return line = line.replace(reg, "")
+        })
+        // update right
+        const val = result.join("\n")
+        dispatch(update(val))
+        loadYaml(val).then((tasks)=>{
+            dispatch(updateTasks(tasks))
+        }, (err) => {
+            dispatch(updateTasks([]))
+            dispatch(displayError(err))
+        }) 
+  }
+
+  const onValue = (event, type) => {
         // get from left
         let count = 1
         const origin = tasks.filter(task => task.key.toString() === event.target.dataset.key.toString())[0];
@@ -60,10 +108,10 @@ export function Viewer() {
             dispatch(updateTasks([]))
             dispatch(displayError(err))
         }) 
-    }
+  }
 
 
-    const onAct = (event, symbol) => {
+  const onAct = (event, symbol) => {
         // get from left
         let count = 1
         const origin = tasks.filter(task => task.key.toString() === event.target.dataset.key.toString())[0];
@@ -90,39 +138,39 @@ export function Viewer() {
             dispatch(updateTasks([]))
             dispatch(displayError(err))
         }) 
-    }
+  }
 
-    const onDone = (event) => {
+  const onDone = (event) => {
         onAct(event, "--")
-    }
+  }
 
-    const onAwait = (event) => {
+  const onAwait = (event) => {
         onAct(event, "&-")
-    }
+  }
 
-    const onCancel = (event) => {
+  const onCancel = (event) => {
         onAct(event, "x-")
-    }
+  }
 
-    const onDelay = (event) => {
+  const onDelay = (event) => {
         onAct(event, "*-")
-    }
+  }
 
-    const onDoc = (event) => {
+  const onDoc = (event) => {
         onAct(event, "+-")
-    }
+  }
 
-    const onDuration = (event) => {
+  const onDuration = (event) => {
         onValue(event, 'duration')
-    }
+  }
 
-    const onCost = (event) => {
+  const onCost = (event) => {
         onValue(event, 'cost')
-    }
+  }
 
-    const onNotes = (event) => {
+  const onNotes = (event) => {
 	onValue(event, 'notes')
-    }
+  }
 
   //<pr>{x.value}</pr>
 
@@ -143,17 +191,7 @@ export function Viewer() {
 	return source.replace(/[-[/\]{}()*+?.,\\^$|#\s]/g, '\\$&');
   }
 
-  return (
-      <main>
-      <section style={{"text-align": "left", "padding":"1em"}}>
-        <b><code>{tasks.length + " tasks" + " | " + Number(pipeline_duration/60).toFixed(2) + " hours | " + pipeline_cost + " $"}</code></b>
-	<br/>
-        <b><code style={{"color" : "grey"}}>{pipeline_notes + " notes"}</code></b>
-      </section>
-      <section>
-      <ListGroup id="result" style={{padding: "10px" }}>
-      {
-	 (! tasks.length && "You're done :)") || [tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match( escapeRegExp(searchterm.toLowerCase())) )[0]].map( x => {
+  function displayTask(x) {
           if(x.parent['type'] !== "recipe" && x.parent['type'] !== "document") {
 	      let counter = x.key + 1
               return <section>
@@ -188,7 +226,19 @@ export function Viewer() {
                   </ListGroup.Item>
                   </section>
           }
-      })
+  }
+
+  return (
+      <main>
+      <section style={{"text-align": "left", "padding":"1em"}}>
+        <b><code>{tasks.length + " tasks" + " | " + Number(pipeline_duration/60).toFixed(2) + " hours | " + pipeline_cost + " $"}</code></b>
+	<br/>
+        <b><code style={{"color" : "grey"}}>{pipeline_notes + " notes"}</code></b>
+      </section>
+      <section>
+      <ListGroup id="result" style={{padding: "10px" }}>
+      {
+	 (! tasks.length && "You're done :)") || getPointer() > -1 && [tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match( escapeRegExp(searchterm.toLowerCase())) )[getPointer()]].map( x => displayTask(x))
       }
       <pre>{error}</pre>
       </ListGroup>
