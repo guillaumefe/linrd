@@ -41,12 +41,16 @@ export function Viewer() {
 	    }
 	  }
 	  if (pointer === -1) {
+            let NEED_UPDATE = false
 	    for (let index in tasks) {
 	      const reg = /[*&+]-$/
               const task = tasks[index]
 	      if (task.value.match(reg)) {
-                resetSprint(pointer)
+                NEED_UPDATE = true
 	      }
+	    }
+            if (NEED_UPDATE) {
+                resetSprint(pointer)
 	    }
 	  }
 	  return pointer
@@ -63,7 +67,7 @@ export function Viewer() {
 	//reg = /[+]-$/
         //result = value.split('\n').map( line => line.trimEnd().replace(reg, ""))
 
-	const reg = /[*&+]-$/
+	const reg = /[*&+]-/
         const result = value.split('\n').map( line => line.replace(reg, ""))
 	// const reg = /[&]-/
         // const result = value.split('\n').map( line => line.replace(reg, ""))
@@ -228,6 +232,7 @@ export function Viewer() {
                   <br />
                   <p><ReactMarkdown remarkPlugins={[gfm]} children={x.value[0].toUpperCase() + x.value.slice(1, -1)}/></p>
 	          <form>
+	          <div style={{marginTop: "50px"}}>
 	          <code>
 		    <p style={{"width": "300px"}}>
 		      <b>Duration in minutes : </b>
@@ -251,6 +256,7 @@ export function Viewer() {
 		    />
 	          </p>
 	          </code>
+	          </div>
 		  </form>
                   </div>
                   <div style={{flex:0.1}}>
