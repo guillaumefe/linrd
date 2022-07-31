@@ -221,11 +221,13 @@ export function Viewer() {
 	return source.replace(/[-[/\]{}()*+?.,\\^$|#\s]/g, '\\$&');
   }
 
+  const _tasks = []
+  let counter = 0
+
   function displayTask(x) {
           if(x.parent['type'] !== "recipe" && x.parent['type'] !== "document") {
-	      let counter = x.key + 1
               return <section>
-		  <ListGroup.Item key={x.key} style={{display: "flex", justifyContent: "space-between"}}>
+		  <ListGroup.Item key={counter++} style={{display: "flex", justifyContent: "space-between"}}>
                   <div style={{textAlign: "left", wordBreak: "break-word"}}>
                   <i>{"# " + x.path.join(" > ")}</i>
                   <br />
@@ -233,29 +235,31 @@ export function Viewer() {
                   <b><ReactMarkdown remarkPlugins={[gfm]} children={x.value[0].toUpperCase() + x.value.slice(1, -1)}/></b>
 	          <form>
 	          <div style={{marginTop: "50px"}}>
-	          <code>
-		    <p style={{"width": "300px"}}>
+		    <div style={{width:"100%"}}>
+		    <code style={{"float":"left", "width": "300px"}}>
 		      <b>Duration in minutes : </b>
-		      <input data-key={x.key} value = {x.duration} style={{"border":"none"}} placeholder="Duration in minutes" onChange={onDuration}></input>
-		    </p>
-		    <p style={{"width": "300px"}}>
+		      <input type="number" data-key={x.key} value = {x.duration} style={{"border":"none"}} placeholder="Duration in minutes" onChange={onDuration}></input>
+		    </code>
+		    <code style={{"float":"left", "width": "300px", "marginTop":"10px"}}>
 		      <b>Cost in dollars : </b>
-		      <input data-key={x.key} value = {x.cost} style={{"border":"none"}} data-key={x.key} placeholder="Cost in dollars" onChange={onCost}></input>
-		    </p>
-		    <p style={{"width": "300px"}}>
+		      <input type="number" data-key={x.key} value = {x.cost} style={{"border":"none"}} data-key={x.key} placeholder="Cost in dollars" onChange={onCost}></input>
+		    </code>
+		    <code style={{"float":"left", "width": "300px", "marginTop":"10px"}}>
 		      <b>Person : </b>
 		      <input data-key={x.key} value = {x.person} style={{"border":"none"}} data-key={x.key} placeholder="Who is responsible?" onChange={onPerson}></input>
-		    </p>
-		  <p>
-		    <b>Deadline : </b>
+		    </code>
+	            </div>
+		    <div style={{"float":"left", "width": "300px", "marginTop":"10px"}}>
+		    <code>
+		      <b>Deadline : </b>
+	            </code>
 		    <DatePicker
-		      showTimeSelect 
-		      selected={Date.parse(x.deadline)}
-		      dateFormat="MMMM d, yyyy h:mmaa"
-		      onChange={date => onDeadline(x.key, date)}
+		        showTimeSelect 
+		        selected={Date.parse(x.deadline)}
+		        dateFormat="MMMM d, yyyy h:mmaa"
+		        onChange={date => onDeadline(x.key, date)}
 		    />
-	          </p>
-	          </code>
+	            </div>
 	          </div>
 		  </form>
                   </div>
@@ -281,7 +285,7 @@ export function Viewer() {
       <section>
       <ListGroup id="result" style={{padding: "10px" }}>
       {
-	 (! tasks.length && getPointer() <0 && "You're done :)") || getPointer() > -1 && [tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match( escapeRegExp(searchterm.toLowerCase())) )[getPointer()]].map( x => displayTask(x))
+	 (! tasks.length && getPointer() <0 && "You're done :)") || getPointer() > -1 && [tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match( escapeRegExp(searchterm.toLowerCase())) )[getPointer()]].map( x => displayTask(x) )
       }
       <pre>{error}</pre>
       </ListGroup>
