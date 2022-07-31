@@ -9,7 +9,7 @@ import {
   selectError,
   selectValue,
   selectSearchTerm,
-  selectPointer
+  selectPointer,
 } from '../helpers/Reducer';
 
 import ListGroup from "react-bootstrap/ListGroup"
@@ -20,6 +20,7 @@ import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 
 export function Viewer() {
+
   const tasks = useSelector(selectTasks)
   const value = useSelector(selectValue)
   const searchterm = useSelector(selectSearchTerm)
@@ -50,8 +51,21 @@ export function Viewer() {
 
   function resetSprint (pointer) {
         // get from left
-	const reg = /[*&+]-/
+	
+	//let reg, result
+	//reg = /[*]-$/
+        //result = value.split('\n').map( line => line.trimEnd().replace(reg, ""))
+	//reg = /[&]-$/
+        //result = value.split('\n').map( line => line.trimEnd().replace(reg, ""))
+	//reg = /[+]-$/
+        //result = value.split('\n').map( line => line.trimEnd().replace(reg, ""))
+
+	const reg = /[*&+]-$/
         const result = value.split('\n').map( line => line.replace(reg, ""))
+	// const reg = /[&]-/
+        // const result = value.split('\n').map( line => line.replace(reg, ""))
+	// const reg = /[+]-/
+        // const result = value.split('\n').map( line => line.replace(reg, ""))
         // update right
         const val = result.join("\n")
         dispatch(update(val))
@@ -236,7 +250,7 @@ export function Viewer() {
       <section>
       <ListGroup id="result" style={{padding: "10px" }}>
       {
-	 (! tasks.length && "You're done :)") || getPointer() > -1 && [tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match( escapeRegExp(searchterm.toLowerCase())) )[getPointer()]].map( x => displayTask(x))
+	 (! tasks.length && getPointer() <0 && "You're done :)") || getPointer() > -1 && [tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match( escapeRegExp(searchterm.toLowerCase())) )[getPointer()]].map( x => displayTask(x))
       }
       <pre>{error}</pre>
       </ListGroup>
