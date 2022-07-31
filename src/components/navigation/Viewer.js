@@ -81,7 +81,7 @@ export function Viewer() {
               const task = tasks[index]
 	      if (! task.value.match(reg)) {
 	        pointer = index
-                break
+                //break
 	      }
 	}
         loadYaml(val).then((tasks)=>{
@@ -232,7 +232,7 @@ export function Viewer() {
                   <i>{"# " + x.path.join(" > ")}</i>
                   <br />
                   <br />
-                  <b><ReactMarkdown remarkPlugins={[gfm]} children={x.value[0].toUpperCase() + x.value.slice(1, -1)}/></b>
+                  <b><ReactMarkdown remarkPlugins={[gfm]} children={(x.value.length > 0) ? x.value[0].toUpperCase() + x.value.slice(1, -1) : ""}/></b>
 	          <form>
 	          <div style={{marginTop: "50px"}}>
 		    <div style={{width:"100%"}}>
@@ -285,7 +285,7 @@ export function Viewer() {
       <section>
       <ListGroup id="result" style={{padding: "10px" }}>
       {
-	 (! tasks.length && getPointer() <0 && "You're done :)") || getPointer() > -1 && [tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match( escapeRegExp(searchterm.toLowerCase())) )[getPointer()]].map( x => displayTask(x) )
+	 (! tasks.length && getPointer() <0 && ! error && "You're done :)") || getPointer() > -1 && [tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match( escapeRegExp(searchterm.toLowerCase())) )[getPointer()]].map( x => displayTask(x) )
       }
       <pre>{error}</pre>
       </ListGroup>
