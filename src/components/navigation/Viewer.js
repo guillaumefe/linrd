@@ -61,8 +61,6 @@ export function Viewer() {
   function resetSprint (pointer) {
         // get from left
 	
-	//let reg, result
-	//reg = /[*]-$/
         //result = value.split('\n').map( line => line.trimEnd().replace(reg, ""))
 	//reg = /[&]-$/
         //result = value.split('\n').map( line => line.trimEnd().replace(reg, ""))
@@ -75,6 +73,7 @@ export function Viewer() {
         // const result = value.split('\n').map( line => line.replace(reg, ""))
 	// const reg = /[+]-/
         // const result = value.split('\n').map( line => line.replace(reg, ""))
+	
         // update right
         const val = result.join("\n")
         dispatch(update(val))
@@ -86,8 +85,8 @@ export function Viewer() {
                 //break
 	      }
 	}
-        loadYaml(val).then((tasks)=>{
-            dispatch(updateTasks(tasks))
+        loadYaml(val).then((t)=>{
+            dispatch(updateTasks(t))
         }, (err) => {
             dispatch(updateTasks([]))
             dispatch(displayError(err))
@@ -153,14 +152,11 @@ export function Viewer() {
             count++
             return line
         })
-        // update right
-	
+        // update right	
         const val = result.join("\n")
         dispatch(update(val))
-        loadYaml(val).then((tasks)=>{
-            //tasks.sort( (a,b) => (parseInt(a.duration) || 0) - (parseInt(b.duration) || 0) )
-            //tasks.sort( (a,b) => (Date.parse(a.deadline) || new Date() ) - (Date.parse(b.deadline) || new Date()) )
-            dispatch(updateTasks(tasks))
+        loadYaml(val).then((t)=>{
+            dispatch(updateTasks(t))
         }, (err) => {
             dispatch(updateTasks([]))
             dispatch(displayError(err))
