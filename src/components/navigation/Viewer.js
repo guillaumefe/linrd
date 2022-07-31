@@ -19,6 +19,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 export function Viewer() {
 
   const tasks = useSelector(selectTasks)
@@ -85,10 +88,10 @@ export function Viewer() {
         }) 
   }
 
-  const onValue = (event, type) => {
+  const onValue = (type, key, content) => {
         // get from left
         let count = 1
-        const origin = tasks.filter(task => task.key.toString() === event.target.dataset.key.toString())[0];
+        const origin = tasks.filter(task => task.key.toString() === key.toString())[0];
         const result = value.split('\n').map( line => {
             if (count.toString() === parseInt(origin.line, 10).toString()){
                 if(line[line.length-1] === ":") {
@@ -101,11 +104,13 @@ export function Viewer() {
 			reg = /\(cost=.*?\)/
 		    } else if (type === 'person') {
 			reg = /\(person=.*?\)/
+		    } else if (type === 'deadline') {
+			reg = /\(deadline=.*?\)/
 		    }
 		    if (reg && line.match(reg)) {
 		      line = line.trimEnd().replace(reg, "");
 		    }
-                    line = line.trimEnd() + " ("+type+"=" + (event.target.value) + ")"
+                    line = line.trimEnd() + " ("+type+"=" + (content) + ")"
                 }
             }
             count++
@@ -173,19 +178,24 @@ export function Viewer() {
   }
 
   const onDuration = (event) => {
-        onValue(event, 'duration')
+	onValue('duration', event.target.dataset.key, event.target.value)
   }
 
   const onCost = (event) => {
-        onValue(event, 'cost')
+	onValue('cost', event.target.dataset.key, event.target.value)
   }
 
   const onPerson = (event) => {
-	onValue(event, 'person')
+	onValue('person', event.target.dataset.key, event.target.value)
+  }
+
+  const onDeadline = (key, date) => {
+	onValue('deadline', key, date.toISOString())
   }
 
   //<pr>{x.value}</pr>
 
+  const unique_person = []
   let pipeline_duration = 0
   let pipeline_cost = 0
   let pipeline_person = 0
@@ -194,8 +204,12 @@ export function Viewer() {
     		pipeline_duration += Number(tasks[task].duration) 
 	  if (tasks[task].cost) 
     		pipeline_cost += Number(tasks[task].cost) 
-	  if (tasks[task].person) 
+	  if (tasks[task].person){ 
+	    if (unique_person.indexOf(tasks[task].person.toLowerCase()) === -1) {
+                unique_person.push(tasks[task].person.toLowerCase())
     		pipeline_person += 1 
+	    }
+	  }
   }
 
   function escapeRegExp(input) {
@@ -214,6 +228,7 @@ export function Viewer() {
                   <br />
                   <p style={{"textTransform": "capitalize"}}><ReactMarkdown remarkPlugins={[gfm]} children={x.value}/></p>
 	          <form>
+	          <code>
 		    <p style={{"width": "300px"}}>
 		      <b>Duration in minutes : </b>
 		      <input data-key={x.key} value = {x.duration} style={{"border":"none"}} placeholder="Duration in minutes" onChange={onDuration}></input>
@@ -226,6 +241,16 @@ export function Viewer() {
 		      <b>Person : </b>
 		      <input data-key={x.key} value = {x.person} style={{"border":"none"}} data-key={x.key} placeholder="Who is responsible?" onChange={onPerson}></input>
 		    </p>
+		  <p>
+		    <b>Deadline : </b>
+		    <DatePicker
+		      showTimeSelect 
+		      selected={Date.parse(x.deadline)}
+		      dateFormat="MMMM d, yyyy h:mmaa"
+		      onChange={date => onDeadline(x.key, date)}
+		    />
+	          </p>
+	          </code>
 		  </form>
                   </div>
                   <div style={{flex:0.1}}>
