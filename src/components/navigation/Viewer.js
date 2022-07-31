@@ -227,10 +227,10 @@ export function Viewer() {
               return <section>
 		  <ListGroup.Item key={x.key} style={{display: "flex", justifyContent: "space-between"}}>
                   <div style={{textAlign: "left", wordBreak: "break-word"}}>
-                  <i>{"# " + '[' + counter + '] ' + x.path.join(" > ")}</i>
+                  <i>{"# " + x.path.join(" > ")}</i>
                   <br />
                   <br />
-                  <p><ReactMarkdown remarkPlugins={[gfm]} children={x.value[0].toUpperCase() + x.value.slice(1, -1)}/></p>
+                  <b><ReactMarkdown remarkPlugins={[gfm]} children={x.value[0].toUpperCase() + x.value.slice(1, -1)}/></b>
 	          <form>
 	          <div style={{marginTop: "50px"}}>
 	          <code>
