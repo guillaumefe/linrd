@@ -232,7 +232,7 @@ export function Viewer() {
                   <i>{"# " + x.path.join(" > ")}</i>
                   <br />
                   <br />
-                  <b><ReactMarkdown remarkPlugins={[gfm]} children={(x.value.length > 0) ? x.value[0].toUpperCase() + x.value.slice(1, -1) : ""}/></b>
+                  <b><ReactMarkdown remarkPlugins={[gfm]} children={(x.value.length > 0) ? x.value[0].toUpperCase() + x.value.slice(1, x.value.length) : ""}/></b>
 	          <form>
 	          <div style={{marginTop: "50px"}}>
 		    <div style={{width:"100%"}}>
