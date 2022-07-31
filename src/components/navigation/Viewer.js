@@ -26,7 +26,7 @@ export function Viewer() {
   const error = useSelector(selectError)
   const dispatch = useDispatch()
 
-  const getPointer = () => {
+  function getPointer () {
 	  let pointer = -1
 	  for (let index in tasks) {
 	    const reg = /-$/
@@ -41,30 +41,28 @@ export function Viewer() {
 	      const reg = /[*&+]-$/
               const task = tasks[index]
 	      if (task.value.match(reg)) {
-                resetSprint()
+                resetSprint(pointer)
 	      }
-	    }
-	  }
-	  for (let index in tasks) {
-	    const reg = /-$/
-            const task = tasks[index]
-	    if (! task.value.match(reg)) {
-	      pointer = index
-              break
 	    }
 	  }
 	  return pointer
   }
 
-  const resetSprint = () => {
+  function resetSprint (pointer) {
         // get from left
-	const reg = /[*&+]-$/
-        const result = value.split('\n').map( line => {
-            return line = line.replace(reg, "")
-        })
+	const reg = /[*&+]-/
+        const result = value.split('\n').map( line => line.replace(reg, ""))
         // update right
         const val = result.join("\n")
         dispatch(update(val))
+	for (let index in tasks) {
+	      const reg = /-$/
+              const task = tasks[index]
+	      if (! task.value.match(reg)) {
+	        pointer = index
+                break
+	      }
+	}
         loadYaml(val).then((tasks)=>{
             dispatch(updateTasks(tasks))
         }, (err) => {
@@ -120,8 +118,8 @@ export function Viewer() {
                 if(line[line.length-1] === ":") {
                     line = line.slice(0, line.length-1) + " " +symbol+":"
                 } else {
-                    if (line[line.length-1] === "-") {
-                        line = line.slice(0, line.length-2)
+                    if (line.trimEnd()[line.length-1] === "-") {
+                        line = line.trimEnd().slice(0, line.length-2)
                     }
                     line = line.trimEnd() + " " +symbol
                 }
@@ -200,7 +198,7 @@ export function Viewer() {
                   <i>{"# " + '[' + counter + '] ' + x.path.join(" > ")}</i>
                   <br />
                   <br />
-                  <p style={{"text-transform": "capitalize"}}><ReactMarkdown remarkPlugins={[gfm]} children={x.value}/></p>
+                  <p style={{"textTransform": "capitalize"}}><ReactMarkdown remarkPlugins={[gfm]} children={x.value}/></p>
 	          <form>
 		    <p style={{"width": "300px"}}>
 		      <b>Duration in minutes : </b>
@@ -230,7 +228,7 @@ export function Viewer() {
 
   return (
       <main>
-      <section style={{"text-align": "left", "padding":"1em"}}>
+      <section style={{"textAlign": "left", "padding":"1em"}}>
         <b><code>{tasks.length + " tasks" + " | " + Number(pipeline_duration/60).toFixed(2) + " hours | " + pipeline_cost + " $"}</code></b>
 	<br/>
         <b><code style={{"color" : "grey"}}>{pipeline_notes + " notes"}</code></b>
