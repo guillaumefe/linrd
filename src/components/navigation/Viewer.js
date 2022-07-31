@@ -226,7 +226,7 @@ export function Viewer() {
                   <i>{"# " + '[' + counter + '] ' + x.path.join(" > ")}</i>
                   <br />
                   <br />
-                  <p style={{"textTransform": "capitalize"}}><ReactMarkdown remarkPlugins={[gfm]} children={x.value}/></p>
+                  <p><ReactMarkdown remarkPlugins={[gfm]} children={x.value[0].toUpperCase() + x.value.slice(1, -1)}/></p>
 	          <form>
 	          <code>
 		    <p style={{"width": "300px"}}>
