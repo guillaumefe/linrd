@@ -121,22 +121,13 @@ export function loadYaml(value = "") {
                                 cancel: (value[value.length-1] === "-" && value[value.length-2] === "x" ) ? true: false,
                                 await: (value[value.length-1] === "-" && value[value.length-2] === "&" ) ? true: false,
                                 path: path.filter( x => isNaN(x)),
-				//urgent: 0,
                                 value
                             }
-			    //const today = new Date();
-			    //const target_day = new Date(Date.parse(task.deadline)) || new Date();
-			    //const difference = target_day.getTime() - today.getTime() || 0;
-			    //const TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
-		            //if(TotalDays < 10) {
-			//	task.urgent = 1
-			    //}
+
                             if(!task.done && !task.cancel) 
                                 memo.push(task)
                         }
-			memo.sort( (a,b) => (parseInt(a.duration) || 0) - (parseInt(b.duration) || 0) )
-			// i memo.sort( (a,b) => a.urgent - b.urgent )
-			memo.sort( (a,b) => (Date.parse(a.deadline) || new Date() ) - (Date.parse(b.deadline) || new Date()) )
+			 
                         return memo
                     }, []);
                     onResolve(output)

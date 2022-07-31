@@ -25,8 +25,7 @@ import "react-datepicker/dist/react-datepicker.css";
 export function Viewer() {
 
   const _tasks = useSelector(selectTasks)
-
-  const tasks = [..._tasks]
+  const tasks = [..._tasks] 
 
   const value = useSelector(selectValue)
   const searchterm = useSelector(selectSearchTerm)
@@ -123,19 +122,20 @@ export function Viewer() {
             count++
             return line
         })
-        // update right
-        const val = result.join("\n")
-        dispatch(update(val))
-        loadYaml(val).then((tasks)=>{
-            dispatch(updateTasks(tasks))
-        }, (err) => {
-            dispatch(updateTasks([]))
-            dispatch(displayError(err))
-        }) 
+	// update right
+	const val = result.join("\n")
+	dispatch(update(val))
+	loadYaml(val).then((tasks)=>{
+		dispatch(updateTasks(tasks))
+	}, (err) => {
+		dispatch(updateTasks([]))
+		dispatch(displayError(err))
+        })
   }
 
 
   const onAct = (event, symbol) => {
+
         // get from left
         let count = 1
         const origin = tasks.filter(task => task.key.toString() === event.target.dataset.key.toString())[0];
@@ -154,9 +154,12 @@ export function Viewer() {
             return line
         })
         // update right
+	
         const val = result.join("\n")
         dispatch(update(val))
         loadYaml(val).then((tasks)=>{
+            //tasks.sort( (a,b) => (parseInt(a.duration) || 0) - (parseInt(b.duration) || 0) )
+            //tasks.sort( (a,b) => (Date.parse(a.deadline) || new Date() ) - (Date.parse(b.deadline) || new Date()) )
             dispatch(updateTasks(tasks))
         }, (err) => {
             dispatch(updateTasks([]))
@@ -234,7 +237,7 @@ export function Viewer() {
                   <br />
                   <b><ReactMarkdown remarkPlugins={[gfm]} children={(x.value.length > 0) ? x.value[0].toUpperCase() + x.value.slice(1, x.value.length) : ""}/></b>
 	          <form>
-	          <div style={{marginTop: "50px"}}>
+	          <div style={{marginTop: "30px"}}>
 		    <div style={{width:"100%"}}>
 		    <code style={{"float":"left", "width": "300px"}}>
 		      <b>Duration in minutes : </b>
