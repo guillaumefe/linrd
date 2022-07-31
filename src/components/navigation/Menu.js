@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   selectSearchTerm,
   updateSearchTerm,
-  sortTasks
 } from '../helpers/Reducer';
 
 import {
@@ -24,10 +23,6 @@ export const Menu = () => {
         dispatch(updateSearchTerm(event.target.value))
     }
 
-    const onSort = (event) => {
-        dispatch(sortTasks())
-    }
-
     useEffect(() => { dispatch(updateSearchTerm("")); },[]);
 
     return (
@@ -38,7 +33,6 @@ export const Menu = () => {
         <Form inline style={{flex:1}}>
         <FormControl onChange={onChange} type="text" placeholder="Search" className="mr-sm-2" />
         </Form>
-	<button style={{"marginLeft":"10px"}} onClick={onSort}>Best match</button>
         </Navbar.Collapse>
         </Navbar>
     )

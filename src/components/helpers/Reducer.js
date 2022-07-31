@@ -47,14 +47,12 @@ export const pipelinrSlice = createSlice({
         },
         updateTasks: (state, action) => {
             state.tasks = action.payload;
+            state.tasks.sort( (a,b) => (parseInt(a.duration) || 0) - (parseInt(b.duration) || 0) )
+            state.tasks.sort( (a,b) => (Date.parse(a.deadline) || new Date() ) - (Date.parse(b.deadline) || new Date()) )
         },
         updateSearchTerm: (state, action) => {
             state.searchterm = action.payload;
         },
-	sortTasks: (state) => {
-          state.tasks.sort( (a,b) => (parseInt(a.duration) || 0) - (parseInt(b.duration) || 0) )
-          state.tasks.sort( (a,b) => (Date.parse(a.deadline) || new Date() ) - (Date.parse(b.deadline) || new Date()) )
-	},
         updateTask: (state, action) => {
             //let result = state.tasks.map( task => (task.key.join() === action.payload.key.join()) ? action.payload : task)
             //state.tasks = result;
