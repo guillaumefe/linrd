@@ -38,7 +38,7 @@ export const Menu = () => {
         <Form inline style={{flex:1}}>
         <FormControl onChange={onChange} type="text" placeholder="Search" className="mr-sm-2" />
         </Form>
-	<Button onClick={onSort} style={{"marginLeft":"10px"}}>Best Match</Button>
+	<Button onClick={onSort} style={{"marginLeft":"10px"}} size="sm">Best Match</Button>
         </Navbar.Collapse>
         </Navbar>
     )
