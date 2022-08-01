@@ -207,10 +207,10 @@ export function Viewer() {
   let pipeline_person = 0
   for (let task in tasks) {
 	  if (tasks[task].duration) { 
-	        const reg = /-$/
-	        if (! tasks[task].value.match(reg)) {
+	        //const reg = /-$/
+	        //if (! tasks[task].value.match(reg)) {
     		  pipeline_duration += Number(tasks[task].duration) 
-	       }
+	       //}
 	  }
 
 	  if (tasks[task].cost) 
