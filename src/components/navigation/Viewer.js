@@ -286,11 +286,11 @@ export function Viewer() {
       {
 	 (! tasks.length && getPointer() <0 && ! error && "You're done :)") || 
 	      getPointer() > -1 && tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase()
-		      .match( escapeRegExp(searchterm.toLowerCase())))
-	                      .sort( (a,b) => parseInt(a.key) - parseInt(b.key) ).map( x => {
-		              const reference = tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase()
-				 .match( escapeRegExp(searchterm.toLowerCase())))[getPointer()]
-				      if(x.path && x.path.join('>') === reference.path.join('>')) {
+		       .match( escapeRegExp(searchterm.toLowerCase())))
+	               .sort( (a,b) => parseInt(a.key) - parseInt(b.key))
+	               .map( x => {
+		              const reference = tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase())[getPointer()]
+				      if(reference && (x.path.join('>') === reference.path.join('>'))) {
 					      return displayTask(x) 
 				      }
 		      })
