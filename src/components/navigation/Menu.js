@@ -2,6 +2,7 @@ import React from "react"
 import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  sortTasks,
   selectSearchTerm,
   updateSearchTerm,
 } from '../helpers/Reducer';
@@ -12,16 +13,20 @@ import {
     NavDropdown,
     Form,
     FormControl,
+    Button
 } from "react-bootstrap"
 
 export const Menu = () => {
-
-
 
     const dispatch = useDispatch()
     const onChange = (event) => {
         dispatch(updateSearchTerm(event.target.value))
     }
+
+    const onSort = () => {
+        dispatch(sortTasks())
+    }
+
 
     useEffect(() => { dispatch(updateSearchTerm("")); },[]);
 
@@ -33,6 +38,7 @@ export const Menu = () => {
         <Form inline style={{flex:1}}>
         <FormControl onChange={onChange} type="text" placeholder="Search" className="mr-sm-2" />
         </Form>
+	<Button onClick={onSort} style={{"marginLeft":"10px"}}>Best Match</Button>
         </Navbar.Collapse>
         </Navbar>
     )
