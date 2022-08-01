@@ -283,10 +283,6 @@ export function Viewer() {
       </section>
       <section>
       <ListGroup id="result" style={{padding: "10px" }}>
-
-
-            //state.tasks
-
       {
 	 (! tasks.length && getPointer() <0 && ! error && "You're done :)") || 
 	      getPointer() > -1 && tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase()
