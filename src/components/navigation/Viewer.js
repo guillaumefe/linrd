@@ -283,14 +283,21 @@ export function Viewer() {
       </section>
       <section>
       <ListGroup id="result" style={{padding: "10px" }}>
+
+
+            //state.tasks
+
       {
-	 (! tasks.length && getPointer() <0 && ! error && "You're done :)") || getPointer() > -1 && tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match( escapeRegExp(searchterm.toLowerCase()))).sort( (a,b) => parseInt(a.key) - parseInt(b.key) ).map( x => {
-		 const reference = tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase().match( escapeRegExp(searchterm.toLowerCase())))[getPointer()].path.join('>')
-		 if (x.path) {
-		   if(x.path.join('>') === reference)
-		 	return displayTask(x) 
-		 }
-	 })
+	 (! tasks.length && getPointer() <0 && ! error && "You're done :)") || 
+	      getPointer() > -1 && tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase()
+		      .match( escapeRegExp(searchterm.toLowerCase())))
+	                      .sort( (a,b) => parseInt(a.key) - parseInt(b.key) ).map( x => {
+		              const reference = tasks.filter( x => (x.path.join(" ") + x.value).toString().toLowerCase()
+				 .match( escapeRegExp(searchterm.toLowerCase())))[getPointer()]
+				      if(x.path && x.path.join('>') === reference.path.join('>')) {
+					      return displayTask(x) 
+				      }
+		      })
       }
       <pre>{error}</pre>
       </ListGroup>
