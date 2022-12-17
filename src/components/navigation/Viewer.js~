@@ -297,7 +297,7 @@ export function Viewer() {
 	</div>
   }
 
-  const MAX_LIMIT = 25
+  const MAX_LIMIT = 5
   let LIMIT = 0
 
   return (

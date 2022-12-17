@@ -31,7 +31,7 @@ export const Menu = () => {
     //useEffect(() => { dispatch(updateSearchTerm("")); },[]);
 
     return (
-        <Navbar bg="light" expand="lg" style={{padding:"10px", display: "flex", justifyContent: "space-between"}}>
+        <Navbar bg="light" expand="lg" style={{width:"100px", padding:"10px", display: "flex", justifyContent: "space-between"}}>
         <Navbar.Brand href="#home">Linrd.ml</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
