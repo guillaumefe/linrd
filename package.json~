@@ -37,7 +37,6 @@
     "start": "react-scripts start",
     "build": "GENERATE_SOURCEMAP=false && react-scripts build",
     "test": "react-scripts test",
-    "package": "electron-packager . my-app --platform=win32 --arch=x64",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
