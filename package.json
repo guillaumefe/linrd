@@ -16,6 +16,7 @@
     "@testing-library/user-event": "^7.1.2",
     "ace-builds": "^1.4.12",
     "bootstrap": "^5.0.1",
+    "file-saver": "^2.0.5",
     "js-yaml": "^4.1.0",
     "react": "^17.0.2",
     "react-ace": "^9.4.0",
@@ -29,7 +30,8 @@
     "react-scripts": "^5.0.0",
     "redux-persist": "^6.0.0",
     "redux-persist-transform-encrypt": "^3.0.1",
-    "remark-gfm": "^1.0.0"
+    "remark-gfm": "^1.0.0",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",

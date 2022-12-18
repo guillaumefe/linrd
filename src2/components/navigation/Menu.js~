@@ -34,7 +34,7 @@ export const Menu = () => {
 
     return (
         <Navbar bg="light" expand="lg" style={{padding:"10px", display: "flex", justifyContent: "space-between"}}>
-        <Navbar.Brand href="about">Linrd.ml</Navbar.Brand>
+        <Navbar.Brand href="/about">Linrd.ml</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
         <Form inline style={{flex:1}}>

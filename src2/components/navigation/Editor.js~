@@ -42,7 +42,7 @@ export function Editor() {
         mode="yaml"
         theme="github"
         value = {value}
-	placeholder = "- my new task here"
+	placeholder = "- my new task here, \nafter a dash and a space"
         onChange={onChange}
         onLoad={onLoad}
         name="editor"

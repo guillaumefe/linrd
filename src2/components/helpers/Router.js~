@@ -42,7 +42,7 @@ function Home() {
     )
 }
 function About() {
-	return <code style={{textAlign:'left'}}>
+	return <code style={{padding:'150px', textAlign:'left'}}>
 		<h4>
 		# How to use Linrd
 		</h4>
