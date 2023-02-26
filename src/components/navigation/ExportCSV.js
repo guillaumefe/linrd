@@ -1,84 +1,76 @@
-import React from 'react'
+import React from 'react';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  selectTasks,
-} from '../helpers/Reducer';
+import { useSelector } from 'react-redux';
+import { selectTasks } from '../helpers/Reducer';
 
 export const Dlxls = () => {
+  const tasks = useSelector(selectTasks);
 
-      const _tasks = useSelector(selectTasks)
-      const tasks = [..._tasks] 
+  const create = () => {
+    const regex = /^(\s*)- \[( |x)\](.*)$/gm;
 
+    // On utilise un objet pour stocker les actions terminées et totales pour chaque contexte
+    const contextData = {};
 
-	const create = () => {
+    // On parcourt chaque tâche pour extraire les actions et les ajouter à contextData
+    tasks.forEach((task) => {
+      const matches = [...task.value.matchAll(regex)];
+      if (matches.length === 0) return;
 
-		const headers = ['Context', 'Task', 'Progression', 'Load', 'Ressources', 'Comments']
+      const contextName = task.path
+        .join(", ")
+        .replace(/[>:|]$/g, "")
+        .replace(/^\w/, (c) => c.toUpperCase());
 
-		let data = tasks.map((t) => {
+      // On utilise un tableau pour stocker toutes les actions pour ce contexte
+      const contextActions = [];
 
-			let statut = ''
+      matches.forEach((match) => {
+        const isComplete = match[2] === "x";
+        const formattedTaskName = match[3]
+          .trim()
+          .replace(/^\w/, (c) => c.toUpperCase())
+          .replace(/[^.?!]\s*$/, "$&.")
+          .replace(/\n\s*/g, "\n");
 
-			if (t.await) {
-				statut = "in a waiting state"
-			} 
-			if (t.cancel) {
-				statut = "has been canceled"
-			} 
-			if (t.done) {
-				statut = "is done"
-			} 
-			if (t.delay) {
-				statut = "to do"
-			} 
-			if (t.doc) {
-				statut = "documentation"
-			}
+        // On ajoute l'action à contextActions avec son état de complétion
+        contextActions.push({ name: formattedTaskName, isComplete });
+      });
 
-			return [
-				    (t.path.length) ? "(" + t.path.join(', ') + ")" : '',
-				    t.value.trim().replace(/[*&+x-]-$/, ''),
-				    Math.round(t.value.length/tasks.length) + "%",
-				    (t.duration > 200) ? 'very high' : (t.duration > 90) ? 'high' : (t.duration > 59) ? 'medium' : (t.duration >= 30) ? 'low' : (t.duration >= 0) ? 'very low':'',
-				    t.person,
-				    statut
-			];
-		})
+      // On ajoute les données pour ce contexte à contextData
+      contextData[contextName] = {
+        actions: contextActions,
+        completed: contextActions.filter((action) => action.isComplete).length,
+        total: contextActions.length,
+      };
+    });
 
-		//data = [  ["Nom", "Prénom", "Âge"],
-		//	  ["Dupont", "Jean", 30],
-		//	  ["Durand", "Marie", 25]
-		//];
+    // On crée un tableau de données à partir de contextData pour l'exportation
+    const data = [
+      ["Context", "Context completion", "Action", "Action completion", "Done"],
+      ...Object.entries(contextData).flatMap(([contextName, context]) => {
+        // Fusionne les cellules contenant le même contexte
+        let rowspan = context.actions.length;
+        return context.actions.map(({ name, isComplete }, index) => [
+          // Centre et aligne à gauche les cellules
+          {v: contextName, s:{ alignment: { vertical: "center", horizontal: "left" }},
+          r: `${index === 0 ? 0 : 1}${index}:${rowspan + index - 1}${index}`},
+          `${Math.round(
+            (context.completed / context.total) * 100
+          )}%`, // Taux de complétion pour le contexte
+          name,
+          isComplete ? "100%" : "0%",
+          isComplete ? "TRUE" : "FALSE",
+        ]);
+      }),
+    ];
 
-		data.unshift(headers)
-		// Create a workbook object
-		const wb = { SheetNames: ['Actions'], Sheets: { Sheet1: {} } };
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, "Actions");
+    XLSX.writeFile(wb, "Export.xlsx");
+  };
 
-		// Add the data to the worksheet
-		//const ws = XLSX.utils.aoa_to_sheet(data);
-		//const ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
-		const ws = XLSX.utils.aoa_to_sheet(data);
-
-		// Add the worksheet to the workbook
-		wb.Sheets['Actions'] = ws;
-
-		const today = new Date();
-
-		const options = {
-			  month: 'long',
-			  day: 'numeric',
-			  year: 'numeric'
-		};
-
-		const dateString = today.toLocaleDateString('en-US', options);
-
-		// Write the workbook to an XLSX file
-		XLSX.writeFile(wb, dateString +'.xlsx');
-	}
-
-	return (
-		<button onClick={(e) => create()}>Export</button>
-	)
-}
+  return <button onClick={create}>Export</button>;
+};
