@@ -28,7 +28,14 @@ export const Dlxls = () => {
 
       matches.forEach((match) => {
         const isComplete = match[2] === "x";
-        const formattedTaskName = match[3]
+        let formattedTaskName = match[3]
+		
+		// Si le nom de la tâche se termine par "+-", on ignore cette action
+        if (formattedTaskName.trim().endsWith("+-")) {
+          return;
+        }
+		
+		formattedTaskName = formattedTaskName
           .trim()
           .replace(/^\w/, (c) => c.toUpperCase())
           .replace(/[^.?!]\s*$/, "$&.")
