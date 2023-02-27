@@ -6,13 +6,14 @@ import { selectTasks } from '../helpers/Reducer';
 
 export const Dlxls = () => {
   const tasks = useSelector(selectTasks);
-
+  let isAwaiting = false
+  
   const create = () => {
     const regex = /^(\s*)- \[( |x)\](.*)$/gm;
 
     // On utilise un objet pour stocker les actions terminées et totales pour chaque contexte
     const contextData = {};
-
+	
     // On parcourt chaque tâche pour extraire les actions et les ajouter à contextData
     tasks.forEach((task) => {
       const matches = [...task.value.matchAll(regex)];
@@ -27,6 +28,7 @@ export const Dlxls = () => {
       const contextActions = [];
 
       matches.forEach((match) => {
+		
         const isComplete = match[2] === "x";
         let formattedTaskName = match[3]
 		
@@ -34,6 +36,14 @@ export const Dlxls = () => {
         if (formattedTaskName.trim().endsWith("+-")) {
           return;
         }
+
+		// Si le nom de la tâche se termine par "&-", cette action est en attente
+		
+        if (formattedTaskName.trim().endsWith("&-")) {
+          isAwaiting = true
+        } else {
+		  isAwaiting = false
+		}
 		
 		formattedTaskName = formattedTaskName
           .trim()
@@ -42,7 +52,7 @@ export const Dlxls = () => {
           .replace(/\n\s*/g, "\n");
 
         // On ajoute l'action à contextActions avec son état de complétion
-        contextActions.push({ name: formattedTaskName, isComplete });
+        contextActions.push({ name: formattedTaskName, isComplete, isAwaiting });
       });
 
       // On ajoute les données pour ce contexte à contextData
@@ -55,11 +65,11 @@ export const Dlxls = () => {
 
     // On crée un tableau de données à partir de contextData pour l'exportation
     const data = [
-      ["Context", "Context completion", "Action", "Action completion", "Done"],
+      ["Context", "Context completion", "Action", "Action completion", "Status"],
       ...Object.entries(contextData).flatMap(([contextName, context]) => {
         // Fusionne les cellules contenant le même contexte
         let rowspan = context.actions.length;
-        return context.actions.map(({ name, isComplete }, index) => [
+        return context.actions.map(({ name, isComplete, isAwaiting }, index) => [
           // Centre et aligne à gauche les cellules
           {v: contextName, s:{ alignment: { vertical: "center", horizontal: "left" }},
           r: `${index === 0 ? 0 : 1}${index}:${rowspan + index - 1}${index}`},
@@ -68,7 +78,7 @@ export const Dlxls = () => {
           )}%`, // Taux de complétion pour le contexte
           name,
           isComplete ? "100%" : "0%",
-          isComplete ? "TRUE" : "FALSE",
+          isComplete ? "FAIT" : (isAwaiting) ? "EN ATTENTE" : "A FAIRE",
         ]);
       }),
     ];
