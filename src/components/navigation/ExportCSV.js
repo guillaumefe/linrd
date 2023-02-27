@@ -7,6 +7,7 @@ import { selectTasks } from '../helpers/Reducer';
 export const Dlxls = () => {
   const tasks = useSelector(selectTasks);
   let isAwaiting = false
+  let isDoing = false
   
   const create = () => {
     const regex = /^(\s*)- \[( |x)\](.*)$/gm;
@@ -38,11 +39,17 @@ export const Dlxls = () => {
         }
 
 		// Si le nom de la tâche se termine par "&-", cette action est en attente
-		
         if (formattedTaskName.trim().endsWith("&-")) {
           isAwaiting = true
         } else {
 		  isAwaiting = false
+		}
+		
+		// Si le nom de la tâche se termine par "*-", cette action est en cours
+		if (formattedTaskName.trim().endsWith("*-")) {
+          isDoing = true
+        } else {
+		  isDoing = false
 		}
 		
 		formattedTaskName = formattedTaskName
@@ -52,7 +59,7 @@ export const Dlxls = () => {
           .replace(/\n\s*/g, "\n");
 
         // On ajoute l'action à contextActions avec son état de complétion
-        contextActions.push({ name: formattedTaskName, isComplete, isAwaiting });
+        contextActions.push({ name: formattedTaskName, isComplete, isAwaiting, isDoing });
       });
 
       // On ajoute les données pour ce contexte à contextData
@@ -69,7 +76,7 @@ export const Dlxls = () => {
       ...Object.entries(contextData).flatMap(([contextName, context]) => {
         // Fusionne les cellules contenant le même contexte
         let rowspan = context.actions.length;
-        return context.actions.map(({ name, isComplete, isAwaiting }, index) => [
+        return context.actions.map(({ name, isComplete, isAwaiting, isDoing }, index) => [
           // Centre et aligne à gauche les cellules
           {v: contextName, s:{ alignment: { vertical: "center", horizontal: "left" }},
           r: `${index === 0 ? 0 : 1}${index}:${rowspan + index - 1}${index}`},
@@ -78,7 +85,7 @@ export const Dlxls = () => {
           )}%`, // Taux de complétion pour le contexte
           name,
           isComplete ? "100%" : "0%",
-          isComplete ? "FAIT" : (isAwaiting) ? "EN ATTENTE" : "A FAIRE",
+          isComplete ? "FAIT" : (isAwaiting) ? "EN ATTENTE" : (isDoing) ? "EN COURS" : "A FAIRE",
         ]);
       }),
     ];
