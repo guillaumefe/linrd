@@ -280,8 +280,8 @@ export function Viewer() {
 	          </div>
 		  </form>
                   </div>
-				  <div style={{fontWeight:"bold", height:"70px", width:"70px", margin: "1%", padding: "1%", border: "1px solid black"}}>
-					  {(x.value.match(/\[x\]/g)) ? Math.round(x.value.match(/\[x\]/g).length / x.value.match(/\[.\]/g).length * 100) +"%" : 0 + "%"}
+				  <div style={{fontWeight:"bold", height:"70px", width:"70px", margin: "1%", padding: "1%", border: (!x.value.match(/\[.\]/g)) ? "" : "1px solid black"}}>
+					  {(!x.value.match(/\[.\]/g)) ? "" : (x.value.match(/\[x\]/g)) ? Math.round(x.value.match(/\[x\]/g).length / x.value.match(/\[.\]/g).length * 100) +"%" : 0 + "%"}
                   </div>
                   <div style={{flex:0.1}}>
                   <Button data-key={x.key} variant={(x.doc) ? "info" : "outline-info"} size="sm" style={{width:"70px", marginBottom: "1px"}} onClick={onDoc}>Doc !</Button>
