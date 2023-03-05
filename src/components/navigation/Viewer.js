@@ -210,19 +210,7 @@ export function Viewer() {
   //<pr>{x.value}</pr>
 
   const unique_person = []
-  let pipeline_duration = tasks.reduce((count, task) => {
-			const matches = task.value.match(/\[.\]/g);
-			if (matches) {
-			  return count + matches.length;
-			}
-			return count;
-		  }, 0) * tasks.reduce((count, task) => {
-			const matches = task.value.match(/\[ \]/g);
-			if (matches) {
-			  return count + matches.length;
-			}
-			return count;
-		  }, 0)
+  let pipeline_duration = 0
 			
 
   let pipeline_cost = 0
