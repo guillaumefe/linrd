@@ -227,10 +227,13 @@ export function Viewer() {
 	  if (tasks[task].cost) 
     		pipeline_cost += Number(tasks[task].cost) 
 	  if (tasks[task].person){ 
-	    if (unique_person.indexOf(tasks[task].person.toLowerCase()) === -1) {
-                unique_person.push(tasks[task].person.toLowerCase())
-    		pipeline_person += 1 
-	    }
+		const _persons = tasks[task].person.split(',')
+		for (let p in _persons) {
+			if (unique_person.indexOf(_persons[p].toLowerCase()) === -1) {
+					unique_person.push(_persons[p].toLowerCase())
+				pipeline_person += 1 
+			}
+		}
 	  }
   }
 
