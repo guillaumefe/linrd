@@ -215,7 +215,7 @@ export function Viewer() {
 			if (matches) {
 			  return count + matches.length;
 			}
-			return count + 1;
+			return count;
 		  }, 0)
 			
 
@@ -225,7 +225,7 @@ export function Viewer() {
 	  if (tasks[task].duration) { 
 	        //const reg = /-$/
 	        //if (! tasks[task].value.match(reg)) {
-    		  pipeline_duration += Number(tasks[task].duration) + 12
+    		  pipeline_duration += Number(tasks[task].duration)
 	       //}
 
 	  }
@@ -302,7 +302,22 @@ export function Viewer() {
 //Number(pipeline_duration/60).toFixed(2)
 
   function get_metadata() {
-	  const timeString = `${Math.floor(pipeline_duration/60)}h${Math.round((pipeline_duration/60 - Math.floor(pipeline_duration/60)) * 60).toString().padStart(2, '0')}`;
+	  //const timeString = `${Math.floor(pipeline_duration/60)}h${Math.round((pipeline_duration/60 - Math.floor(pipeline_duration/60)) * 60).toString().padStart(2, '0')}`;
+
+		let timeString;
+		const minutes = Math.floor(pipeline_duration);
+		const seconds = Math.round(minutes*60);
+		const hours = Math.floor(minutes/60);
+		const days = Math.floor(hours/24);
+
+		if (days > 0) {
+		  timeString = `${days}j ${hours % 24}h`;
+		} else if (hours > 0) {
+		  timeString = `${hours}h`;
+		} else {
+		  timeString = `${minutes}m`;
+		}
+		
 	  return <div> 
         <b>
 		<code>
