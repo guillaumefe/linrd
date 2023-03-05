@@ -210,7 +210,15 @@ export function Viewer() {
   //<pr>{x.value}</pr>
 
   const unique_person = []
-  let pipeline_duration = tasks.length * 2
+  let pipeline_duration = tasks.length * tasks.reduce((count, task) => {
+			const matches = task.value.match(/\[ \]/g);
+			if (matches) {
+			  return count + matches.length;
+			}
+			return count + 1;
+		  }, 0)
+			
+
   let pipeline_cost = 0
   let pipeline_person = 0
   for (let task in tasks) {
@@ -219,6 +227,7 @@ export function Viewer() {
 	        //if (! tasks[task].value.match(reg)) {
     		  pipeline_duration += Number(tasks[task].duration) + 12
 	       //}
+
 	  }
 
 	  if (tasks[task].cost) 
@@ -291,7 +300,20 @@ export function Viewer() {
 
   function get_metadata() {
 	  return <div> 
-        <b><code>{tasks.filter( (x) => ! x.delay).length + " tasks" + " | " + Number(pipeline_duration/60).toFixed(2) + " hours | " + pipeline_cost + " $"}</code></b>
+        <b>
+		<code>
+		  {tasks.filter(task => !task.delay).reduce((count, task) => {
+			const matches = task.value.match(/\[ \]/g);
+			if (matches) {
+			  return count + matches.length;
+			}
+			return count + 1;
+		  }, 0) + " tasks" + " | " + Number(pipeline_duration/60).toFixed(2) + " hours | " + pipeline_cost + " $"
+		  }
+		</code>
+
+	
+		</b>
 	<br/>
         <b><code style={{"color" : "grey"}}>{pipeline_person + " " + ((pipeline_person > 1) ? "persons" : "person") + ((!unique_person.length) ? "" : ": ") + unique_person}</code></b>
 	</div>
