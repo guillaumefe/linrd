@@ -298,7 +298,11 @@ export function Viewer() {
           }
   }
 
+// Affiche "1 heure(s) et 42 minute(s)"
+//Number(pipeline_duration/60).toFixed(2)
+
   function get_metadata() {
+	  const timeString = `${Math.floor(pipeline_duration/60)}h${Math.round((pipeline_duration/60 - Math.floor(pipeline_duration/60)) * 60).toString().padStart(2, '0')}`;
 	  return <div> 
         <b>
 		<code>
@@ -308,7 +312,7 @@ export function Viewer() {
 			  return count + matches.length;
 			}
 			return count + 1;
-		  }, 0) + " tasks" + " | " + Number(pipeline_duration/60).toFixed(2) + " hours | " + pipeline_cost + " $"
+		  }, 0) + " tasks" + " | " + timeString + " | " + pipeline_cost + " $"
 		  }
 		</code>
 
