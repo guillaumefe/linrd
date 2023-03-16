@@ -19,7 +19,10 @@ export function Editor() {
   const onLoad = (editor) => {
       editor.focus();
       editor.navigateFileEnd();
-      editor.execCommand("foldall");
+      editor.execCommand("foldall")
+      editor.on("change", function(e, ins) {
+          editor.execCommand("foldall");
+      });
   }
   const onChange = (val) => {
           dispatch(displayError(""))
