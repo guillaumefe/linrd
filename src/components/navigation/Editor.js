@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {loadYaml} from "../services/Load.js"
 import {
@@ -16,14 +16,23 @@ import "ace-builds/src-noconflict/theme-github";
 export function Editor() {
   const dispatch = useDispatch()
   const value = useSelector(selectValue)
+  const [editor, setEditor] = useState(null);
   const onLoad = (editor) => {
       editor.focus();
       editor.navigateFileEnd();
-      editor.execCommand("foldall")
-      editor.on("change", function(e, ins) {
-          editor.execCommand("foldall");
-      });
+      editor.execCommand("foldall");
+	  editor.execCommand("foldall");
+  
+	  document.addEventListener("USER_ACTION", () => {
+		  setTimeout(() => {
+			  if (editor){
+				editor.execCommand("foldall");
+			  }
+		  }, 700)
+	  });
+	  setEditor(editor)
   }
+
   const onChange = (val) => {
           dispatch(displayError(""))
           dispatch(update(val))
@@ -39,6 +48,7 @@ export function Editor() {
           } else {
               dispatch(updateTasks([]))
           }
+
   }
 
   return (

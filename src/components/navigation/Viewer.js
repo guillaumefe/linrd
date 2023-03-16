@@ -141,7 +141,7 @@ export function Viewer() {
   }
 
   const onAct = (event, symbol) => {
-
+		
         // get from left
         let count = 1
         const origin = tasks.filter(task => task.key.toString() === event.target.dataset.key.toString())[0];
@@ -168,6 +168,9 @@ export function Viewer() {
             dispatch(updateTasks([]))
             dispatch(displayError(err))
         }) 
+		
+	  	const _event = new Event('USER_ACTION');
+		document.dispatchEvent(_event);
 
   }
 
